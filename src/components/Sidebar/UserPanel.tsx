@@ -5,16 +5,18 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import Typography from '@material-ui/core/Typography'
 import AddIcon from '@material-ui/icons/Add'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
+import Brightness7Icon from '@material-ui/icons/Brightness7'
+import Brightness4Icon from '@material-ui/icons/Brightness4'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   bold: {
     fontWeight: 700,
   },
 
   iconButton: {
-    // backgroundColor: '#f0f2f5',
+    marginLeft: theme.spacing(1),
   },
-})
+}))
 
 const UserPanel = () => {
   const classes = useStyles()
@@ -24,8 +26,7 @@ const UserPanel = () => {
       display="flex"
       alignItems="center"
       justifyContent="space-between"
-      mx={'16px'}
-      my={'20px'}
+      m={2}
     >
       <Box display="flex" alignItems="center" width="100%">
         <Avatar />
@@ -36,12 +37,21 @@ const UserPanel = () => {
         </Box>
       </Box>
       <Box display="flex" alignItems="center">
-        <IconButton size="small" className={classes.iconButton}>
+        <IconButton className={classes.iconButton}>
           <MoreHorizIcon />
         </IconButton>
-        <IconButton size="small">
+        <IconButton className={classes.iconButton}>
           <AddIcon />
         </IconButton>
+        {true ? (
+          <IconButton className={classes.iconButton}>
+            <Brightness4Icon />
+          </IconButton>
+        ) : (
+          <IconButton className={classes.iconButton}>
+            <Brightness7Icon />
+          </IconButton>
+        )}
       </Box>
     </Box>
   )
