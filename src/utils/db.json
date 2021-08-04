@@ -1,0 +1,84 @@
+{
+  "users": [
+    {
+      "uid": "u1",
+      "displayName": "Name 1",
+      "photoURL": "https://source.unsplash.com/random",
+      "groups": ["g1", "g2"]
+    },
+    {
+      "uid": "u2",
+      "displayName": "Name 2",
+      "photoURL": "https://source.unsplash.com/random",
+      "groups": ["g1", "g2"]
+    },
+    {
+      "uid": "u3",
+      "displayName": "Name 3",
+      "photoURL": "https://source.unsplash.com/random",
+      "groups": ["g1"]
+    }
+  ],
+  "groups": [
+    {
+      "id": "g1",
+      "name": "Group 1",
+      "type": "public",
+      "members": ["u1", "u2", "u3"],
+      "createdBy": "u1",
+      "createdAt": "20.09.2021",
+      "recentMessage": {
+        "text": "Hello 1",
+        "sentBy": "u1",
+        "sentAt": "20.09.2021"
+      }
+    },
+    {
+      "id": "g2",
+      "name": "Group 2",
+      "type": "private",
+      "members": ["u1", "u2"],
+      "createdBy": "u1",
+      "createdAt": "20.09.2021",
+      "recentMessage": {
+        "text": "Hello 2",
+        "sentBy": "u2",
+        "sentAt": "20.09.2021"
+      }
+    }
+  ],
+  "groupMessages": [
+    {
+      "id": "g1",
+      "messages": {
+        "text": "Hello 1",
+        "sentBy": "u1",
+        "sentAt": "20.09.2021"
+      }
+    },
+    {
+      "id": "g1",
+      "messages": {
+        "text": "Hello 3",
+        "sentBy": "u3",
+        "sentAt": "20.09.2021"
+      }
+    },
+    {
+      "id": "g2",
+      "messages": {
+        "text": "Hello 1",
+        "sentBy": "u1",
+        "sentAt": "20.09.2021"
+      }
+    },
+    {
+      "id": "g2",
+      "messages": {
+        "text": "Hello 2",
+        "sentBy": "u2",
+        "sentAt": "20.09.2021"
+      }
+    }
+  ]
+}
