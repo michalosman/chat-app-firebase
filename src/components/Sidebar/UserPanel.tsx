@@ -30,7 +30,7 @@ const UserPanel = () => {
     >
       <Box display="flex" alignItems="center" width="100%">
         <Avatar />
-        <Box pl={'10px'}>
+        <Box ml={1}>
           <Typography className={classes.bold} variant="h5">
             Chats
           </Typography>

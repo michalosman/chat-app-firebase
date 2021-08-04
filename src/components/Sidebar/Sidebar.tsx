@@ -5,7 +5,16 @@ import UserPanel from './UserPanel'
 
 const Sidebar = () => {
   return (
-    <Box width="360px" borderRight={1} borderColor="grey.300">
+    <Box
+      display="flex"
+      flexDirection="column"
+      width="360px"
+      border={1}
+      borderTop={0}
+      borderBottom={0}
+      borderLeft={0}
+      borderColor="rgba(0, 0, 0, 0.1)"
+    >
       <UserPanel />
       <Search />
       <Groups />

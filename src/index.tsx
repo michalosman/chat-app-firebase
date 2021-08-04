@@ -6,9 +6,39 @@ import App from './App'
 
 // TODO Theming with Redux
 
-const theme = createTheme({})
+const theme = createTheme({
+  overrides: {
+    MuiCssBaseline: {
+      '@global': {
+        '*::-webkit-scrollbar': {
+          width: '10px',
+        },
+        '*::-webkit-scrollbar-track': {
+          backgroundColor: 'transparent',
+        },
+        '*::-webkit-scrollbar-thumb': {
+          backgroundColor: '#d6dee1',
+          borderRadius: '20px',
+          width: '10px',
+        },
+      },
+    },
+  },
+
+  typography: {
+    button: {
+      textTransform: 'none',
+    },
+  },
+})
 
 const darkTheme = createTheme({
+  typography: {
+    button: {
+      textTransform: 'none',
+    },
+  },
+
   palette: {
     type: 'dark',
   },
