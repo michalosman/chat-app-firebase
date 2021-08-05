@@ -1,4 +1,4 @@
-import Box from '@material-ui/core/Box'
+import { Box } from '@material-ui/core'
 import Chat from './components/Chat/Chat'
 import Sidebar from './components/Sidebar/Sidebar'
 
