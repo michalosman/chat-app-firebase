@@ -3,6 +3,9 @@ import Groups from './Groups'
 import Search from './Search'
 import UserPanel from './UserPanel'
 
+// TODO
+// Refactor whole sidebar for > 750px
+
 const Sidebar = () => {
   return (
     <Box
