@@ -1,28 +1,62 @@
-import { Box } from '@material-ui/core'
+import { Box, IconButton, makeStyles } from '@material-ui/core'
 import Groups from './Groups'
 import Search from './Search'
 import UserPanel from './UserPanel'
+import SettingsIcon from '@material-ui/icons/Settings'
 
-// TODO
-// Refactor whole sidebar for > 750px
+const useStyles = makeStyles((theme) => ({
+  sidebar: {
+    [theme.breakpoints.down('sm')]: {
+      width: '90px',
+
+      '& $hideSm': {
+        display: 'none',
+      },
+
+      '& $showSm': {
+        display: 'block',
+      },
+    },
+  },
+
+  hideSm: {
+    display: 'block',
+  },
+
+  showSm: {
+    display: 'none',
+  },
+}))
 
 const Sidebar = () => {
+  const classes = useStyles()
+
   return (
     <Box
+      className={classes.sidebar}
       display="flex"
       flexDirection="column"
-      width="360px"
+      width="361px"
       border={1}
       borderTop={0}
       borderBottom={0}
       borderLeft={0}
       borderColor={'divider'}
     >
-      <UserPanel />
-      <Search />
+      <div className={classes.hideSm}>
+        <UserPanel />
+        <Search />
+      </div>
+      <Box className={classes.showSm} display="flex" mx={'auto'} my={1}>
+        <IconButton>
+          <SettingsIcon />
+        </IconButton>
+      </Box>
       <Groups />
     </Box>
   )
 }
 
 export default Sidebar
+
+// 700px -> 118px, hide UserPanel, hide Search, show Settings

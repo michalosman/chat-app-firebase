@@ -15,7 +15,7 @@ const Search = () => {
   const [input, setInput] = useState('')
 
   return (
-    <Box m={2} mt={1}>
+    <Box m={2}>
       <Input
         className={classes.input}
         fullWidth
