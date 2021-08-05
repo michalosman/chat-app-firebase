@@ -1,17 +1,19 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { CssBaseline, ThemeProvider } from '@material-ui/core'
+import { Provider } from 'react-redux'
+import { CssBaseline } from '@material-ui/core'
 import App from './App'
-import { theme, darkTheme } from './theme/themes'
-
-// TODO Theming with Redux
+import { store } from './state/store/store'
+import DarkThemeProvider from './theme/DarkThemeProvider'
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={true ? theme : darkTheme}>
-      <CssBaseline />
-      <App />
-    </ThemeProvider>
+    <Provider store={store}>
+      <DarkThemeProvider>
+        <CssBaseline />
+        <App />
+      </DarkThemeProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 )

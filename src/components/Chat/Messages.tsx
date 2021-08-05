@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   ownMessage: {
     marginRight: '0',
     marginLeft: 'auto',
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.light,
     color: theme.palette.primary.contrastText,
     '& $messageInfo': {
       right: '5px',

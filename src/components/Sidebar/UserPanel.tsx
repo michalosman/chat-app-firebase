@@ -10,6 +10,9 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import Brightness7Icon from '@material-ui/icons/Brightness7'
 import Brightness4Icon from '@material-ui/icons/Brightness4'
 import db from '../../utils/db.json'
+import { useSelector, useDispatch } from 'react-redux'
+import { toggleDarkTheme } from '../../state/actions'
+import { AppState } from '../../state/store/store'
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -23,8 +26,11 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const UserPanel = () => {
+  const darkThemeEnabled = useSelector(
+    (state: AppState) => state.darkThemeEnabled
+  )
+  const dispatch = useDispatch()
   const classes = useStyles()
-  const darkTheme = false
   const user = db.users[0]
 
   return (
@@ -42,12 +48,18 @@ const UserPanel = () => {
         <IconButton className={classes.iconButton}>
           <AddIcon />
         </IconButton>
-        {darkTheme ? (
-          <IconButton className={classes.iconButton}>
+        {darkThemeEnabled ? (
+          <IconButton
+            className={classes.iconButton}
+            onClick={() => dispatch(toggleDarkTheme())}
+          >
             <Brightness7Icon />
           </IconButton>
         ) : (
-          <IconButton className={classes.iconButton}>
+          <IconButton
+            className={classes.iconButton}
+            onClick={() => dispatch(toggleDarkTheme())}
+          >
             <Brightness4Icon />
           </IconButton>
         )}
