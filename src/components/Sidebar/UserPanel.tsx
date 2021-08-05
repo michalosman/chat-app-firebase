@@ -7,8 +7,8 @@ import {
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
-import Brightness7Icon from '@material-ui/icons/Brightness7'
-import Brightness4Icon from '@material-ui/icons/Brightness4'
+import Brightness2Icon from '@material-ui/icons/Brightness2'
+import WbSunnyIcon from '@material-ui/icons/WbSunny'
 import db from '../../utils/db.json'
 import { useSelector, useDispatch } from 'react-redux'
 import { toggleDarkTheme } from '../../state/actions'
@@ -53,14 +53,14 @@ const UserPanel = () => {
             className={classes.iconButton}
             onClick={() => dispatch(toggleDarkTheme())}
           >
-            <Brightness7Icon />
+            <WbSunnyIcon />
           </IconButton>
         ) : (
           <IconButton
             className={classes.iconButton}
             onClick={() => dispatch(toggleDarkTheme())}
           >
-            <Brightness4Icon />
+            <Brightness2Icon />
           </IconButton>
         )}
       </Box>
