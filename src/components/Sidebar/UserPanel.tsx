@@ -9,10 +9,11 @@ import AddIcon from '@material-ui/icons/Add'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import Brightness7Icon from '@material-ui/icons/Brightness7'
 import Brightness4Icon from '@material-ui/icons/Brightness4'
+import db from '../../utils/db.json'
 
 const useStyles = makeStyles((theme) => ({
   title: {
-    marginLeft: theme.spacing(1),
+    marginLeft: theme.spacing(2),
     fontWeight: 700,
   },
 
@@ -24,11 +25,12 @@ const useStyles = makeStyles((theme) => ({
 const UserPanel = () => {
   const classes = useStyles()
   const darkTheme = false
+  const user = db.users[0]
 
   return (
     <Box display="flex" justifyContent="space-between" m={2}>
       <Box display="flex" alignItems="center">
-        <Avatar />
+        <Avatar src={`${user.photoURL}`} />
         <Typography className={classes.title} variant="h5">
           Chats
         </Typography>

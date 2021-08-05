@@ -5,7 +5,7 @@ import SendBox from './SendBox'
 
 const Chat = () => {
   return (
-    <Box flex={1}>
+    <Box display="flex" flexDirection="column" flex={1}>
       <ChatPanel />
       <Messages />
       <SendBox />
