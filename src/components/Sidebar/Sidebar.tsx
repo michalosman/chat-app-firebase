@@ -2,30 +2,13 @@ import Groups from './Groups'
 import Search from './Search'
 import UserPanel from './UserPanel'
 
-import { Box, IconButton, makeStyles } from '@material-ui/core'
-import SettingsIcon from '@material-ui/icons/Settings'
+import { Box, makeStyles } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
   sidebar: {
     [theme.breakpoints.down('sm')]: {
-      width: '90px',
-
-      '& $hideSm': {
-        display: 'none',
-      },
-
-      '& $showSm': {
-        display: 'block',
-      },
+      width: '83px',
     },
-  },
-
-  hideSm: {
-    display: 'block',
-  },
-
-  showSm: {
-    display: 'none',
   },
 }))
 
@@ -44,15 +27,8 @@ const Sidebar = () => {
       borderLeft={0}
       borderColor={'divider'}
     >
-      <div className={classes.hideSm}>
-        <UserPanel />
-        <Search />
-      </div>
-      <Box className={classes.showSm} display="flex" mx={'auto'} my={1}>
-        <IconButton>
-          <SettingsIcon />
-        </IconButton>
-      </Box>
+      <UserPanel />
+      <Search />
       <Groups />
     </Box>
   )

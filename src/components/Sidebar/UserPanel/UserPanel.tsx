@@ -16,6 +16,19 @@ import AddChatMenu from './AddChatMenu'
 import OptionsMenu from './OptionsMenu'
 
 const useStyles = makeStyles((theme) => ({
+  userInfo: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+  },
+
+  userActions: {
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      margin: 'auto',
+    },
+  },
+
   title: {
     marginLeft: theme.spacing(2),
     fontWeight: 700,
@@ -31,14 +44,14 @@ const UserPanel = () => {
   const user = db.users[0]
 
   return (
-    <Box display="flex" justifyContent="space-between" m={2} mb={3}>
-      <Box display="flex" alignItems="center">
+    <Box display="flex" justifyContent="space-between" m={2} mb={1}>
+      <Box className={classes.userInfo} display="flex" alignItems="center">
         <Avatar src={`${user.photoURL}`} />
         <Typography className={classes.title} variant="h5">
           Chats
         </Typography>
       </Box>
-      <Box display="flex">
+      <Box className={classes.userActions} display="flex">
         <OptionsMenu />
         <AddChatMenu />
         {darkThemeEnabled ? (

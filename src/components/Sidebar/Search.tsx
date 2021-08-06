@@ -3,6 +3,12 @@ import { useState } from 'react'
 import { Box, Input, makeStyles } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
+  search: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+  },
+
   input: {
     paddingRight: theme.spacing(2),
     paddingLeft: theme.spacing(2),
@@ -16,7 +22,7 @@ const Search = () => {
   const [input, setInput] = useState('')
 
   return (
-    <Box m={2}>
+    <Box className={classes.search} m={2}>
       <Input
         className={classes.input}
         fullWidth

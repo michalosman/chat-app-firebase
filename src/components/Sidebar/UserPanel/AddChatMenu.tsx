@@ -41,6 +41,7 @@ const AddChatMenu = () => {
   }
 
   const openPrivateDialog = () => {
+    closeMenu()
     setIsPrivateDialogOpen(true)
   }
 
@@ -49,6 +50,7 @@ const AddChatMenu = () => {
   }
 
   const openGroupDialog = () => {
+    closeMenu()
     setIsGroupDialogOpen(true)
   }
 
