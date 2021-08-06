@@ -8,8 +8,8 @@ import {
   MenuItem,
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
-import PersonOutlinedIcon from '@material-ui/icons/PersonOutlined'
-import PeopleOutlinedIcon from '@material-ui/icons/PeopleOutlined'
+import PersonIcon from '@material-ui/icons/Person'
+import PeopleIcon from '@material-ui/icons/People'
 
 const AddChatMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -35,13 +35,13 @@ const AddChatMenu = () => {
       >
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <PersonOutlinedIcon fontSize="small" />
+            <PersonIcon />
           </ListItemIcon>
           <ListItemText primary="Private" />
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <PeopleOutlinedIcon fontSize="small" />
+            <PeopleIcon />
           </ListItemIcon>
           <ListItemText primary="Group" />
         </MenuItem>

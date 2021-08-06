@@ -44,7 +44,7 @@ const DarkThemeProvider = ({ children }: IProps) => {
       MuiListItemIcon: {
         root: {
           minWidth: 0,
-          marginRight: defaultTheme.spacing(2),
+          marginRight: defaultTheme.spacing(1),
         },
       },
     },

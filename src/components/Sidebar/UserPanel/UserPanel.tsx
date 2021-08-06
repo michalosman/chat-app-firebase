@@ -10,7 +10,6 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core'
-
 import Brightness2Icon from '@material-ui/icons/Brightness2'
 import WbSunnyIcon from '@material-ui/icons/WbSunny'
 import AddChatMenu from './AddChatMenu'

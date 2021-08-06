@@ -7,11 +7,11 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@material-ui/core'
-import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
+import AddIcon from '@material-ui/icons/Add'
+import EditIcon from '@material-ui/icons/Edit'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
-import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined'
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import DeleteIcon from '@material-ui/icons/Delete'
 
 const GroupMenu = () => {
   const isOwner = true
@@ -39,27 +39,27 @@ const GroupMenu = () => {
       >
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <AddOutlinedIcon fontSize="small" />
+            <AddIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Add person" />
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <EditOutlinedIcon fontSize="small" />
+            <EditIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Rename" />
         </MenuItem>
         {isOwner ? (
           <MenuItem onClick={handleClose}>
             <ListItemIcon>
-              <DeleteOutlinedIcon fontSize="small" />
+              <DeleteIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText primary="Delete" />
           </MenuItem>
         ) : (
           <MenuItem onClick={handleClose}>
             <ListItemIcon>
-              <ExitToAppOutlinedIcon fontSize="small" />
+              <ExitToAppIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText primary="Leave" />
           </MenuItem>

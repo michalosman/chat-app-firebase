@@ -9,9 +9,9 @@ import {
 } from '@material-ui/core'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
-import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined'
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline'
-import ReportOutlinedIcon from '@material-ui/icons/ReportOutlined'
+import SettingsIcon from '@material-ui/icons/Settings'
+import HelpIcon from '@material-ui/icons/Help'
+import ReportIcon from '@material-ui/icons/Report'
 
 const OptionsMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -41,25 +41,25 @@ const OptionsMenu = () => {
       >
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <SettingsOutlinedIcon fontSize="small" />
+            <SettingsIcon />
           </ListItemIcon>
           <ListItemText primary="Preferences" />
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <HelpOutlineIcon fontSize="small" />
+            <HelpIcon />
           </ListItemIcon>
           <ListItemText primary="Help" />
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <ReportOutlinedIcon fontSize="small" />
+            <ReportIcon />
           </ListItemIcon>
           <ListItemText primary="Report an issue" />
         </MenuItem>
         <MenuItem onClick={signOut}>
           <ListItemIcon>
-            <ExitToAppIcon fontSize="small" />
+            <ExitToAppIcon />
           </ListItemIcon>
           <ListItemText primary="Logout" />
         </MenuItem>

@@ -8,8 +8,8 @@ import {
   ListItemText,
 } from '@material-ui/core'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
-import BlockOutlinedIcon from '@material-ui/icons/BlockOutlined'
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
+import BlockIcon from '@material-ui/icons/Block'
+import DeleteIcon from '@material-ui/icons/Delete'
 
 const PrivateMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -35,13 +35,13 @@ const PrivateMenu = () => {
       >
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <BlockOutlinedIcon fontSize="small" />
+            <BlockIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Block" />
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <DeleteOutlinedIcon fontSize="small" />
+            <DeleteIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Delete" />
         </MenuItem>
