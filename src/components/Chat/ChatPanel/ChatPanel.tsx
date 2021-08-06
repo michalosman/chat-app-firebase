@@ -11,7 +11,7 @@ const useStyles = makeStyles(() => ({
 
 const ChatPanel = () => {
   const classes = useStyles()
-  const isPrivate = true
+  const isPrivate = false
 
   return (
     <Box
