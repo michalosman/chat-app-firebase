@@ -1,7 +1,8 @@
-import { Box, IconButton, makeStyles } from '@material-ui/core'
 import Groups from './Groups'
 import Search from './Search'
 import UserPanel from './UserPanel'
+
+import { Box, IconButton, makeStyles } from '@material-ui/core'
 import SettingsIcon from '@material-ui/icons/Settings'
 
 const useStyles = makeStyles((theme) => ({
