@@ -36,11 +36,6 @@ const useStyles = makeStyles((theme) => ({
   iconButton: {
     marginLeft: theme.spacing(1),
   },
-
-  listItemIcon: {
-    minWidth: 0,
-    marginRight: theme.spacing(1),
-  },
 }))
 
 const UserPanel = () => {
@@ -89,25 +84,25 @@ const UserPanel = () => {
           onClose={handleClose}
         >
           <MenuItem onClick={handleClose}>
-            <ListItemIcon className={classes.listItemIcon}>
+            <ListItemIcon>
               <SettingsOutlinedIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText primary="Preferences" />
           </MenuItem>
           <MenuItem onClick={handleClose}>
-            <ListItemIcon className={classes.listItemIcon}>
+            <ListItemIcon>
               <HelpOutlineIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText primary="Help" />
           </MenuItem>
           <MenuItem onClick={handleClose}>
-            <ListItemIcon className={classes.listItemIcon}>
+            <ListItemIcon>
               <ReportOutlinedIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText primary="Report an issue" />
           </MenuItem>
           <MenuItem onClick={signOut}>
-            <ListItemIcon className={classes.listItemIcon}>
+            <ListItemIcon>
               <ExitToAppIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText primary="Logout" />
@@ -123,14 +118,14 @@ const UserPanel = () => {
           onClose={handleClose}
         >
           <MenuItem onClick={signOut}>
-            <ListItemIcon className={classes.listItemIcon}>
-              <PersonOutlinedIcon />
+            <ListItemIcon>
+              <PersonOutlinedIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText primary="Private" />
           </MenuItem>
           <MenuItem onClick={signOut}>
-            <ListItemIcon className={classes.listItemIcon}>
-              <PeopleOutlinedIcon />
+            <ListItemIcon>
+              <PeopleOutlinedIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText primary="Group" />
           </MenuItem>

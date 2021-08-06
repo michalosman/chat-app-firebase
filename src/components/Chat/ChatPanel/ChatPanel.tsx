@@ -1,11 +1,7 @@
-import {
-  Avatar,
-  Box,
-  IconButton,
-  makeStyles,
-  Typography,
-} from '@material-ui/core'
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
+import PrivateMenu from './PrivateMenu'
+import GroupMenu from './GroupMenu'
+
+import { Avatar, Box, makeStyles, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles(() => ({
   bold: {
@@ -15,6 +11,7 @@ const useStyles = makeStyles(() => ({
 
 const ChatPanel = () => {
   const classes = useStyles()
+  const isPrivate = false
 
   return (
     <Box
@@ -38,11 +35,7 @@ const ChatPanel = () => {
           </Typography>
         </Box>
       </Box>
-      <Box>
-        <IconButton>
-          <MoreHorizIcon></MoreHorizIcon>
-        </IconButton>
-      </Box>
+      {isPrivate ? <PrivateMenu /> : <GroupMenu />}
     </Box>
   )
 }
