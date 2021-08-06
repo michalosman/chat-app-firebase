@@ -59,5 +59,3 @@ const Sidebar = () => {
 }
 
 export default Sidebar
-
-// 700px -> 118px, hide UserPanel, hide Search, show Settings

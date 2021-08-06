@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import db from '../../utils/db.json'
-import { toggleDarkTheme } from '../../state/actions'
-import { AppState } from '../../state/store/store'
+import db from '../../../utils/db.json'
+import { toggleDarkTheme } from '../../../state/actions'
+import { AppState } from '../../../state/store/store'
 
 import {
   Avatar,

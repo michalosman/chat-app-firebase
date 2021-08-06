@@ -1,4 +1,4 @@
-import ChatPanel from './ChatPanel/ChatPanel'
+import ChatPanel from './ChatPanel'
 import Messages from './Messages'
 import SendBox from './SendBox'
 
