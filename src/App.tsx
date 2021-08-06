@@ -1,6 +1,7 @@
-import { Box } from '@material-ui/core'
 import Chat from './components/Chat/Chat'
 import Sidebar from './components/Sidebar/Sidebar'
+
+import { Box } from '@material-ui/core'
 
 const App = () => {
   return (

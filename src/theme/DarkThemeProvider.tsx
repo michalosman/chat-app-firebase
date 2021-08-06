@@ -1,7 +1,8 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { createTheme, ThemeProvider } from '@material-ui/core'
 import { AppState } from '../state/store/store'
+
+import { createTheme, ThemeProvider } from '@material-ui/core'
 
 interface IProps {
   children: React.ReactNode

@@ -1,10 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { CssBaseline } from '@material-ui/core'
 import App from './App'
-import { store } from './state/store/store'
 import DarkThemeProvider from './theme/DarkThemeProvider'
+import { store } from './state/store/store'
+
+import { CssBaseline } from '@material-ui/core'
 
 ReactDOM.render(
   <React.StrictMode>

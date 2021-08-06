@@ -1,7 +1,8 @@
+import { useState } from 'react'
+
 import { Box, IconButton, Input, makeStyles } from '@material-ui/core'
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions'
 import SendIcon from '@material-ui/icons/Send'
-import { useState } from 'react'
 
 const useStyles = makeStyles((theme) => ({
   form: {

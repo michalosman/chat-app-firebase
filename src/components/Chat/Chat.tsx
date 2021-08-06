@@ -1,7 +1,8 @@
-import { Box } from '@material-ui/core'
 import ChatPanel from './ChatPanel/ChatPanel'
 import Messages from './Messages'
 import SendBox from './SendBox'
+
+import { Box } from '@material-ui/core'
 
 const Chat = () => {
   return (
