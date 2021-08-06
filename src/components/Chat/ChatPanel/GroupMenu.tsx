@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
 import {
-  Box,
   IconButton,
   Menu,
   MenuItem,
@@ -28,7 +27,7 @@ const GroupMenu = () => {
   }
 
   return (
-    <Box>
+    <>
       <IconButton onClick={openMenu}>
         <MoreHorizIcon></MoreHorizIcon>
       </IconButton>
@@ -66,7 +65,7 @@ const GroupMenu = () => {
           </MenuItem>
         )}
       </Menu>
-    </Box>
+    </>
   )
 }
 
