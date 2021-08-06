@@ -8,10 +8,10 @@ const useStyles = makeStyles((theme) => ({
   },
 
   message: {
-    minHeight: 'min-content',
     position: 'relative',
     borderRadius: '10px',
     marginRight: 'auto',
+    maxWidth: '50vw',
     backgroundColor: theme.palette.action.selected,
   },
 
@@ -32,6 +32,11 @@ const useStyles = makeStyles((theme) => ({
     left: '5px',
     color: theme.palette.text.secondary,
     fontWeight: 'bold',
+  },
+
+  messageText: {
+    whiteSpace: 'initial',
+    wordWrap: 'break-word',
   },
 }))
 
@@ -54,7 +59,6 @@ const Messages = () => {
     >
       {messages.map((message) => (
         <Box
-          display="flex"
           key={message.id}
           className={`${classes.message} ${
             message.sentBy === userId ? classes.ownMessage : ''
@@ -64,9 +68,12 @@ const Messages = () => {
         >
           <Typography className={classes.messageInfo} variant="caption">
             {/* {message.sentBy} */}
-            <div>Michał </div>
+            {message.sentBy === userId ? 'You' : 'Michał'}
           </Typography>
-          <Typography>{message.text}</Typography>
+          <Typography className={classes.messageText}>
+            {/* {message.text} */}
+            Message
+          </Typography>
         </Box>
       ))}
     </Box>
