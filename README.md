@@ -17,7 +17,8 @@ npm start
 - [React](https://reactjs.org/)
 - [Redux](https://redux.js.org/)
 - [Firebase](https://firebase.google.com/)
-- [Material UI](https://material-ui.com/)
+- [Material-UI](https://material-ui.com/)
+- [react-firebase-hooks](https://github.com/CSFrequency/react-firebase-hooks)
 
 ## License
 
