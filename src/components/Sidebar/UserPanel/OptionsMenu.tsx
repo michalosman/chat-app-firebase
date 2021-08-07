@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { signOut } from 'firebase/auth'
+import { auth } from '../../../firebase'
 
 import {
   IconButton,
@@ -22,10 +24,6 @@ const OptionsMenu = () => {
 
   const handleClose = () => {
     setAnchorEl(null)
-  }
-
-  const signOut = () => {
-    handleClose()
   }
 
   return (
@@ -57,7 +55,7 @@ const OptionsMenu = () => {
           </ListItemIcon>
           <ListItemText primary="Report an issue" />
         </MenuItem>
-        <MenuItem onClick={signOut}>
+        <MenuItem onClick={() => signOut(auth)}>
           <ListItemIcon>
             <ExitToAppIcon />
           </ListItemIcon>

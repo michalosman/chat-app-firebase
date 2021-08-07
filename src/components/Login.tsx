@@ -1,3 +1,5 @@
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
+import { auth } from '../firebase'
 import logo from '../assets/logo192.png'
 
 import { Box, Button, makeStyles, Typography } from '@material-ui/core'
@@ -30,6 +32,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = () => {
   const classes = useStyles()
+
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, new GoogleAuthProvider())
+  }
 
   return (
     <Box
@@ -64,7 +70,11 @@ const Login = () => {
             <img className={classes.image} src={logo} alt="" />
           </Box>
           <Typography className={classes.title}>Welcome to ChatApp</Typography>
-          <Button  variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={signInWithGoogle}
+          >
             Sign in with Google
           </Button>
         </Box>
