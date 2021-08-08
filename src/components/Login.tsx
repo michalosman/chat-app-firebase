@@ -41,12 +41,15 @@ const Login = () => {
   const saveUserData = (user: User) => {
     if (!user) return
 
-    db.collection('users').doc(user.uid).set({
-      uid: user.uid,
-      displayName: user.displayName,
-      email: user.email,
-      photoURL: user.photoURL,
-    })
+    db.collection('users').doc(user.uid).set(
+      {
+        uid: user.uid,
+        displayName: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+      },
+      { merge: true }
+    )
   }
 
   return (
