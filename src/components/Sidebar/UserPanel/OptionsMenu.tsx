@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { signOut } from 'firebase/auth'
 import { auth } from '../../../firebase'
 
 import {
@@ -55,7 +54,7 @@ const OptionsMenu = () => {
           </ListItemIcon>
           <ListItemText primary="Report an issue" />
         </MenuItem>
-        <MenuItem onClick={() => signOut(auth)}>
+        <MenuItem onClick={() => auth.signOut()}>
           <ListItemIcon>
             <ExitToAppIcon />
           </ListItemIcon>

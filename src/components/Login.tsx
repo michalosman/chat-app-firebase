@@ -1,5 +1,5 @@
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
-import { auth } from '../firebase'
+import { auth, db, provider, User } from '../firebase'
+import firebase from 'firebase/app'
 import logo from '../assets/logo192.png'
 
 import { Box, Button, makeStyles, Typography } from '@material-ui/core'
@@ -33,8 +33,20 @@ const useStyles = makeStyles((theme) => ({
 const Login = () => {
   const classes = useStyles()
 
-  const signInWithGoogle = () => {
-    signInWithPopup(auth, new GoogleAuthProvider())
+  const signInWithGoogle = async () => {
+    const { user } = await auth.signInWithPopup(provider)
+    saveUserData(user)
+  }
+
+  const saveUserData = (user: User) => {
+    if (!user) return
+
+    db.collection('users').doc(user.uid).set({
+      uid: user.uid,
+      displayName: user.displayName,
+      email: user.email,
+      photoURL: user.photoURL,
+    })
   }
 
   return (

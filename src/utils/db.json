@@ -3,18 +3,21 @@
     {
       "uid": "u1",
       "displayName": "User 1",
+      "email": "u1@gmail.com",
       "photoURL": "https://source.unsplash.com/random",
       "groups": ["g1", "g2"]
     },
     {
       "uid": "u2",
       "displayName": "User 2",
+      "email": "u2@gmail.com",
       "photoURL": "https://picsum.photos/200",
       "groups": ["g1", "g2"]
     },
     {
       "uid": "u3",
       "displayName": "User 3",
+      "email": "u3@gmail.com",
       "photoURL": "https://source.unsplash.com/random",
       "groups": ["g1"]
     }
