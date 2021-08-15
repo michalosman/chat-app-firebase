@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { db, auth } from '../../../firebase'
 
 import {
   Dialog,
@@ -29,8 +30,7 @@ const AddChatMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [isPrivateDialogOpen, setIsPrivateDialogOpen] = useState(false)
   const [isGroupDialogOpen, setIsGroupDialogOpen] = useState(false)
-  const [privateInput, setPrivateInput] = useState('')
-  const [groupInput, setGroupInput] = useState('')
+  const [input, setInput] = useState('')
 
   const openMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget)
@@ -47,7 +47,7 @@ const AddChatMenu = () => {
 
   const closePrivateDialog = () => {
     setIsPrivateDialogOpen(false)
-    setPrivateInput('')
+    setInput('')
   }
 
   const openGroupDialog = () => {
@@ -57,20 +57,28 @@ const AddChatMenu = () => {
 
   const closeGroupDialog = () => {
     setIsGroupDialogOpen(false)
-    setGroupInput('')
+    setInput('')
   }
 
-  const createPrivateChat = () => {}
-
-  const handlePrivateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPrivateInput(e.currentTarget.value)
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(e.currentTarget.value)
     // Some search box with results
   }
 
-  const createGroupChat = () => {}
+  const createPrivateChat = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    closePrivateDialog()
+  }
 
-  const handleGroupInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setGroupInput(e.currentTarget.value)
+  const createGroupChat = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    db.collection('groups').add({
+      name: input,
+      ownerId: auth.currentUser?.uid,
+      members: [auth.currentUser?.uid],
+      type: 'group'
+    })
+    closeGroupDialog()
   }
 
   return (
@@ -106,27 +114,26 @@ const AddChatMenu = () => {
           >
             Create Private Chat
           </Typography>
-          <Input
-            placeholder="Search person"
-            onChange={handlePrivateInput}
-            value={privateInput}
-          />
-          <Box display="flex" justifyContent="space-between" mt={2}>
-            <Button
-              color="secondary"
-              variant="contained"
-              onClick={closePrivateDialog}
-            >
-              Cancel
-            </Button>
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={createPrivateChat}
-            >
-              Create
-            </Button>
-          </Box>
+          <form onSubmit={createPrivateChat}>
+            <Input
+              placeholder="Search person"
+              onChange={handleInput}
+              value={input}
+              required
+            />
+            <Box display="flex" justifyContent="space-between" mt={2}>
+              <Button
+                color="secondary"
+                variant="contained"
+                onClick={closePrivateDialog}
+              >
+                Cancel
+              </Button>
+              <Button color="primary" variant="contained" type="submit">
+                Create
+              </Button>
+            </Box>
+          </form>
         </Box>
       </Dialog>
       <Dialog open={isGroupDialogOpen} onClose={closeGroupDialog}>
@@ -138,27 +145,21 @@ const AddChatMenu = () => {
           >
             Create Group Chat
           </Typography>
-          <Input
-            placeholder="Name"
-            onChange={handleGroupInput}
-            value={groupInput}
-          />
-          <Box display="flex" justifyContent="space-between" mt={2}>
-            <Button
-              color="secondary"
-              variant="contained"
-              onClick={closeGroupDialog}
-            >
-              Cancel
-            </Button>
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={createGroupChat}
-            >
-              Create
-            </Button>
-          </Box>
+          <form onSubmit={createGroupChat}>
+            <Input placeholder="Name" onChange={handleInput} value={input} />
+            <Box display="flex" justifyContent="space-between" mt={2}>
+              <Button
+                color="secondary"
+                variant="contained"
+                onClick={closeGroupDialog}
+              >
+                Cancel
+              </Button>
+              <Button color="primary" variant="contained" type="submit">
+                Create
+              </Button>
+            </Box>
+          </form>
         </Box>
       </Dialog>
     </>
