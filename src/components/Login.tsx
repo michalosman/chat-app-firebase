@@ -1,4 +1,4 @@
-import { auth, db, provider, User } from '../firebase'
+import { auth, db, provider } from '../firebase'
 import firebase from 'firebase/app'
 import logo from '../assets/logo192.png'
 
@@ -35,12 +35,10 @@ const Login = () => {
 
   const signInWithGoogle = async () => {
     const { user } = await auth.signInWithPopup(provider)
-    saveUserData(user)
+    if (user) saveUserData(user)
   }
 
-  const saveUserData = (user: User) => {
-    if (!user) return
-
+  const saveUserData = (user: firebase.User) => {
     db.collection('users').doc(user.uid).set(
       {
         uid: user.uid,

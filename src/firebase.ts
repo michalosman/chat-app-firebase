@@ -15,6 +15,4 @@ const auth = app.auth()
 const db = app.firestore()
 const provider = new firebase.auth.GoogleAuthProvider()
 
-export type User = firebase.User | null
-
 export { auth, db, provider }
