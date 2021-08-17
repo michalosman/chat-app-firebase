@@ -1,6 +1,6 @@
 import { TOGGLE_DARKTHEME, AppAction } from '../../types/actions'
 
-const toggleDarkTheme = () => {
+const toggleDarkTheme = (): AppAction => {
   return {
     type: TOGGLE_DARKTHEME,
   }
