@@ -1,6 +1,7 @@
 import { createStore } from 'redux'
 import rootReducer from '../reducers'
 
+
 const theme = localStorage.getItem('theme')
 
 let initialState = {
