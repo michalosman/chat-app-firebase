@@ -1,6 +1,6 @@
 import Message from "./Message";
 
-export default interface Group {
+interface Group {
   id: string
   name: string
   type: string
@@ -9,3 +9,5 @@ export default interface Group {
   createdAt: string
   recentMessage: Message
 }
+
+export default Group
