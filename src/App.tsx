@@ -12,7 +12,7 @@ import { useEffect } from 'react'
 const App = () => {
   const [user, loading] = useAuthState(auth)
 
-  const groupsQuery = db.collection('groups').orderBy('name', 'asc')
+  const groupsQuery = db.collection('groups').orderBy('name')
   const [groups] = useCollectionData(groupsQuery, { idField: 'id' })
 
   useEffect(() => {
