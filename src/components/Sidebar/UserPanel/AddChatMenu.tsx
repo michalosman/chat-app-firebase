@@ -9,7 +9,6 @@ import {
   Menu,
   MenuItem,
   Box,
-  Typography,
   Input,
   Button,
   makeStyles,
@@ -20,9 +19,11 @@ import PeopleIcon from '@material-ui/icons/People'
 import UserSearchbox from '../../UserSearchbox'
 
 const useStyles = makeStyles((theme) => ({
-  dialogTitle: {
-    fontSize: '21px',
-    fontWeight: 'bold',
+  input: {
+    borderRadius: '4px',
+    height: '38px',
+    paddingRight: theme.spacing(1.5),
+    paddingLeft: theme.spacing(1.5),
   },
 }))
 
@@ -32,6 +33,7 @@ const AddChatMenu = () => {
   const [isPrivateDialogOpen, setIsPrivateDialogOpen] = useState(false)
   const [isGroupDialogOpen, setIsGroupDialogOpen] = useState(false)
   const [input, setInput] = useState('')
+  const [selectedUserID, setSelectedUserID] = useState('')
 
   const openMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget)
@@ -63,7 +65,6 @@ const AddChatMenu = () => {
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.currentTarget.value)
-    // Some search box with results
   }
 
   const createPrivateChat = (e: React.FormEvent<HTMLFormElement>) => {
@@ -108,22 +109,8 @@ const AddChatMenu = () => {
       </Menu>
       <Dialog open={isPrivateDialogOpen} onClose={closePrivateDialog}>
         <Box p={2}>
-          <Typography
-            className={classes.dialogTitle}
-            align="center"
-            gutterBottom
-          >
-            Create Private Chat
-          </Typography>
           <form onSubmit={createPrivateChat}>
-            <Input
-              placeholder="Search person"
-              onChange={handleInput}
-              value={input}
-              disableUnderline
-              required
-            />
-            <UserSearchbox search={input} />
+            <UserSearchbox setSelectedUserID={setSelectedUserID} />
             <Box display="flex" justifyContent="space-between" mt={2}>
               <Button
                 color="secondary"
@@ -141,16 +128,10 @@ const AddChatMenu = () => {
       </Dialog>
       <Dialog open={isGroupDialogOpen} onClose={closeGroupDialog}>
         <Box p={2}>
-          <Typography
-            className={classes.dialogTitle}
-            align="center"
-            gutterBottom
-          >
-            Create Group Chat
-          </Typography>
           <form onSubmit={createGroupChat}>
             <Input
-              placeholder="Name"
+              className={classes.input}
+              placeholder="Group name"
               onChange={handleInput}
               value={input}
               disableUnderline
