@@ -8,13 +8,6 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
-
-  input: {
-    paddingRight: theme.spacing(2),
-    paddingLeft: theme.spacing(2),
-    borderRadius: '50px',
-    backgroundColor: theme.palette.action.hover,
-  },
 }))
 
 const Search = () => {
@@ -24,7 +17,6 @@ const Search = () => {
   return (
     <Box className={classes.search} m={2}>
       <Input
-        className={classes.input}
         fullWidth
         disableUnderline
         placeholder="Search chat"

@@ -1,4 +1,10 @@
-const UserSearchbox = () => {
+interface Props {
+  search: string
+}
+
+const UserSearchbox = ({search}: Props) => {
+  console.log(search)
+
   return (
     <div>
       

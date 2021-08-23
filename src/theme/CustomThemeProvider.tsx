@@ -55,6 +55,15 @@ const CustomThemeProvider = ({ children }: Props) => {
           marginRight: defaultTheme.spacing(1.5),
         },
       },
+
+      MuiInput: {
+        root: {
+          paddingRight: defaultTheme.spacing(2),
+          paddingLeft: defaultTheme.spacing(2),
+          borderRadius: '50px',
+          backgroundColor: defaultTheme.palette.action.hover,
+        },
+      },
     },
   })
 

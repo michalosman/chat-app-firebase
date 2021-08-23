@@ -17,8 +17,9 @@ import {
 import AddIcon from '@material-ui/icons/Add'
 import PersonIcon from '@material-ui/icons/Person'
 import PeopleIcon from '@material-ui/icons/People'
+import UserSearchbox from '../../UserSearchbox'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   dialogTitle: {
     fontSize: '21px',
     fontWeight: 'bold',
@@ -76,7 +77,7 @@ const AddChatMenu = () => {
       name: input,
       ownerId: auth.currentUser?.uid,
       members: [auth.currentUser?.uid],
-      type: 'group'
+      type: 'group',
     })
     closeGroupDialog()
   }
@@ -119,8 +120,10 @@ const AddChatMenu = () => {
               placeholder="Search person"
               onChange={handleInput}
               value={input}
+              disableUnderline
               required
             />
+            <UserSearchbox search={input} />
             <Box display="flex" justifyContent="space-between" mt={2}>
               <Button
                 color="secondary"
@@ -146,7 +149,13 @@ const AddChatMenu = () => {
             Create Group Chat
           </Typography>
           <form onSubmit={createGroupChat}>
-            <Input placeholder="Name" onChange={handleInput} value={input} />
+            <Input
+              placeholder="Name"
+              onChange={handleInput}
+              value={input}
+              disableUnderline
+              required
+            />
             <Box display="flex" justifyContent="space-between" mt={2}>
               <Button
                 color="secondary"

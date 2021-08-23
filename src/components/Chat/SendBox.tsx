@@ -11,12 +11,8 @@ const useStyles = makeStyles((theme) => ({
   },
 
   input: {
-    paddingRight: theme.spacing(2),
-    paddingLeft: theme.spacing(2),
-    borderRadius: '50px',
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    backgroundColor: theme.palette.action.hover,
   },
 }))
 
