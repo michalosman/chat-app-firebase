@@ -61,7 +61,9 @@ const CustomThemeProvider = ({ children }: Props) => {
           paddingRight: defaultTheme.spacing(2),
           paddingLeft: defaultTheme.spacing(2),
           borderRadius: '50px',
-          backgroundColor: defaultTheme.palette.action.hover,
+          backgroundColor: darkThemeEnabled
+            ? defaultTheme.palette.action.disabled
+            : defaultTheme.palette.action.hover,
         },
       },
     },
