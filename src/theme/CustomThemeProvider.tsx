@@ -4,11 +4,11 @@ import { AppState } from '../state/store/store'
 
 import { createTheme, ThemeProvider } from '@material-ui/core'
 
-interface IProps {
+interface Props {
   children: React.ReactNode
 }
 
-const CustomThemeProvider = ({ children }: IProps) => {
+const CustomThemeProvider = ({ children }: Props) => {
   const darkThemeEnabled = useSelector(
     (state: AppState) => state.darkThemeEnabled
   )
