@@ -6,6 +6,4 @@ interface User {
   groups: string[]
 }
 
-type UserNullable = User | null 
-
-export default UserNullable
+export default User
