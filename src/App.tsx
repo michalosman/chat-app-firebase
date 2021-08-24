@@ -2,55 +2,50 @@ import Chat from './components/Chat'
 import Sidebar from './components/Sidebar'
 import Login from './components/Login'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import {
-  useCollectionData,
-  useDocumentData,
-} from 'react-firebase-hooks/firestore'
 import { auth, db } from './firebase'
 
 import { Box } from '@material-ui/core'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { setUser } from './state/actions'
+import { setGroups, setUser } from './state/actions'
+import { convertToGroup, convertToUser } from './utils/converters'
 
 const App = () => {
+  const [user, loading] = useAuthState(auth)
   const dispatch = useDispatch()
 
-  const [user, loading] = useAuthState(auth)
-
-  const userQuery = db.collection('users').doc(user?.uid)
-  const [userData] = useDocumentData(userQuery)
-
-  const groupsQuery = db.collection('groups').orderBy('name')
-  const [groups] = useCollectionData(groupsQuery, { idField: 'id' })
-
   useEffect(() => {
+    let unsubscribeUser = () => {}
+    let unsubscribeGroups = () => {}
+
     if (user) {
-      dispatch(
-        setUser({
-          uid: userData?.uid,
-          displayName: userData?.displayName,
-          email: userData?.email,
-          photoURL: userData?.photoURL,
-          groups: userData?.groups || [],
+      unsubscribeUser = db
+        .collection('users')
+        .doc(user.uid)
+        .onSnapshot((snapshot) =>
+          dispatch(setUser(convertToUser(snapshot.data())))
+        )
+
+      unsubscribeGroups = db
+        .collection('groups')
+        .where('members', 'array-contains', user.uid)
+        .onSnapshot((snapshot) => {
+          dispatch(
+            setGroups(snapshot.docs.map((doc) => convertToGroup(doc.data())))
+          )
         })
-      )
     } else {
       dispatch(setUser(null))
+      dispatch(setGroups([]))
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userData])
 
-  useEffect(() => {
-    if (user) {
-      console.log(groups)
-      // set groups
-    } else {
-      // reset groups
+    return () => {
+      unsubscribeUser()
+      unsubscribeGroups()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userData, groups])
+  }, [user])
 
   return (
     <Box display="flex" height="100vh">
