@@ -1,9 +1,11 @@
 import { Avatar, Input, List, ListItem, makeStyles } from '@material-ui/core'
 import { useState } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { useSelector } from 'react-redux'
 import { db } from '../firebase'
+import { AppState } from '../state/store/store'
 import User from '../types/User'
-import { convertUsers } from '../utils/converters'
+import { convertToUsers } from '../utils/converters'
 
 interface Props {
   onItemClick: (id: string) => void
@@ -14,18 +16,20 @@ const useStyles = makeStyles((theme) => ({
     height: '38px',
     paddingRight: theme.spacing(1.5),
     paddingLeft: theme.spacing(1.5),
+    marginBottom: theme.spacing(2),
     borderRadius: '4px',
   },
 
   list: {
     width: '105%',
-    height: '135px',
+    height: '121px',
     padding: '0',
-    borderRadius: '4px',
-    overflow: 'scroll',
+    overflowY: 'scroll',
+    overflowX: 'hidden',
   },
 
   li: {
+    borderRadius: '4px',
     padding: theme.spacing(1),
   },
 
@@ -38,10 +42,11 @@ const useStyles = makeStyles((theme) => ({
 
 const UserSearchbox = ({ onItemClick }: Props) => {
   const classes = useStyles()
+  const currentUser: User = useSelector((state: AppState) => state.user)
   const [input, setInput] = useState('')
 
   const usersQuery = db.collection('users').orderBy('displayName')
-  const users = convertUsers(useCollectionData(usersQuery)[0])
+  const users = convertToUsers(useCollectionData(usersQuery)[0])
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.currentTarget.value)
@@ -49,7 +54,10 @@ const UserSearchbox = ({ onItemClick }: Props) => {
 
   const filterResults = (word: string, users: User[]) => {
     const regex = new RegExp(word, 'gi')
-    return users.filter((user) => user.displayName.match(regex)) //&& user.uid !== auth.currentUser.id
+    return users.filter(
+      (user) => user.displayName.match(regex) && user.uid !== currentUser.uid
+    )
+    // TODO: If already exists then open chat window / don't suggest user
   }
 
   const usersList = users
