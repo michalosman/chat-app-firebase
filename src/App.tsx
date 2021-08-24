@@ -10,6 +10,7 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { setGroups, setUser } from './state/actions'
 import { convertToGroup, convertToUser } from './utils/converters'
+import { USER_INIT_STATE } from './state/reducers/user'
 
 const App = () => {
   const [user, loading] = useAuthState(auth)
@@ -36,7 +37,7 @@ const App = () => {
           )
         })
     } else {
-      dispatch(setUser(null))
+      dispatch(setUser(USER_INIT_STATE))
       dispatch(setGroups([]))
     }
 

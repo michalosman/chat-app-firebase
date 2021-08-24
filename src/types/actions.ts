@@ -9,7 +9,7 @@ export const TOGGLE_DARKTHEME = 'TOGGLE_DARKTHEME'
 
 export interface SetUserAction {
   type: typeof SET_USER
-  user: User | null
+  user: User
 }
 
 export interface SetGroupsAction {
