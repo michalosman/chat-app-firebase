@@ -2,27 +2,45 @@ import Chat from './components/Chat'
 import Sidebar from './components/Sidebar'
 import Login from './components/Login'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { useCollectionData } from 'react-firebase-hooks/firestore'
+import {
+  useCollectionData,
+  useDocumentData,
+} from 'react-firebase-hooks/firestore'
 import { auth, db } from './firebase'
 
 import { Box } from '@material-ui/core'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { setUser } from './state/actions'
 
 const App = () => {
+  const dispatch = useDispatch()
+
   const [user, loading] = useAuthState(auth)
+
+  const userQuery = db.collection('users').doc(user?.uid)
+  const [userData] = useDocumentData(userQuery)
 
   const groupsQuery = db.collection('groups').orderBy('name')
   const [groups] = useCollectionData(groupsQuery, { idField: 'id' })
 
   useEffect(() => {
     if (user) {
-      console.log(user)
-      // set user
+      dispatch(
+        setUser({
+          uid: userData?.uid,
+          displayName: userData?.displayName,
+          email: userData?.email,
+          photoURL: userData?.photoURL,
+          groups: userData?.groups || [],
+        })
+      )
     } else {
-      // reset user
+      dispatch(setUser(null))
     }
-  }, [user])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userData])
 
   useEffect(() => {
     if (user) {
@@ -31,7 +49,8 @@ const App = () => {
     } else {
       // reset groups
     }
-  }, [user, groups])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userData, groups])
 
   return (
     <Box display="flex" height="100vh">
