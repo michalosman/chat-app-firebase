@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { db, auth } from '../../../firebase'
+import { db } from '../../../firebase'
 
 import {
   Dialog,
@@ -17,6 +17,9 @@ import AddIcon from '@material-ui/icons/Add'
 import PersonIcon from '@material-ui/icons/Person'
 import PeopleIcon from '@material-ui/icons/People'
 import UserSearchbox from '../../UserSearchbox'
+import { useSelector } from 'react-redux'
+import { AppState } from '../../../state/store/store'
+import User from '../../../types/User'
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -29,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 const AddChatMenu = () => {
   const classes = useStyles()
+  const user = useSelector((state: AppState) => state.user)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [isPrivateDialogOpen, setIsPrivateDialogOpen] = useState(false)
   const [isGroupDialogOpen, setIsGroupDialogOpen] = useState(false)
@@ -75,8 +79,8 @@ const AddChatMenu = () => {
     e.preventDefault()
     db.collection('groups').add({
       name: input,
-      ownerId: auth.currentUser?.uid,
-      members: [auth.currentUser?.uid],
+      ownerId: user.uid,
+      members: [user.uid],
       type: 'group',
     })
     closeGroupDialog()
@@ -114,6 +118,7 @@ const AddChatMenu = () => {
               color="secondary"
               variant="contained"
               onClick={closePrivateDialog}
+              fullWidth
             >
               Cancel
             </Button>
