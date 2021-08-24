@@ -1,12 +1,12 @@
 import { Avatar, Input, List, ListItem, makeStyles } from '@material-ui/core'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { useState } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { db } from '../firebase'
 import User from '../types/User'
 import { convertUsers } from '../utils/converters'
 
 interface Props {
-  setSelectedUserID: Dispatch<SetStateAction<string>>
+  onItemClick: (id: string) => void
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const UserSearchbox = ({ setSelectedUserID }: Props) => {
+const UserSearchbox = ({ onItemClick }: Props) => {
   const classes = useStyles()
   const [input, setInput] = useState('')
 
@@ -45,17 +45,11 @@ const UserSearchbox = ({ setSelectedUserID }: Props) => {
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.currentTarget.value)
-    setSelectedUserID('')
   }
 
   const filterResults = (word: string, users: User[]) => {
     const regex = new RegExp(word, 'gi')
-    return users.filter((user) => user.displayName.match(regex))
-  }
-
-  const handleLiClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (e.currentTarget.textContent) setInput(e.currentTarget.textContent)
-    setSelectedUserID(e.currentTarget.id)
+    return users.filter((user) => user.displayName.match(regex)) //&& user.uid !== auth.currentUser.id
   }
 
   const usersList = users
@@ -65,7 +59,9 @@ const UserSearchbox = ({ setSelectedUserID }: Props) => {
           id={user.uid}
           className={classes.li}
           button
-          onClick={handleLiClick}
+          onClick={(e: React.MouseEvent<HTMLDivElement>) =>
+            onItemClick(e.currentTarget.id)
+          }
         >
           <Avatar className={classes.avatar} src={user.photoURL} />
           <div>{user.displayName}</div>

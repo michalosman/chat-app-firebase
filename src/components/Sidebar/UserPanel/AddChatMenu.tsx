@@ -33,7 +33,6 @@ const AddChatMenu = () => {
   const [isPrivateDialogOpen, setIsPrivateDialogOpen] = useState(false)
   const [isGroupDialogOpen, setIsGroupDialogOpen] = useState(false)
   const [input, setInput] = useState('')
-  const [selectedUserID, setSelectedUserID] = useState('')
 
   const openMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget)
@@ -67,9 +66,9 @@ const AddChatMenu = () => {
     setInput(e.currentTarget.value)
   }
 
-  const createPrivateChat = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const createPrivateChat = (id: string) => {
     closePrivateDialog()
+    console.log(id)
   }
 
   const createGroupChat = (e: React.FormEvent<HTMLFormElement>) => {
@@ -109,21 +108,16 @@ const AddChatMenu = () => {
       </Menu>
       <Dialog open={isPrivateDialogOpen} onClose={closePrivateDialog}>
         <Box p={2}>
-          <form onSubmit={createPrivateChat}>
-            <UserSearchbox setSelectedUserID={setSelectedUserID} />
-            <Box display="flex" justifyContent="space-between" mt={2}>
-              <Button
-                color="secondary"
-                variant="contained"
-                onClick={closePrivateDialog}
-              >
-                Cancel
-              </Button>
-              <Button color="primary" variant="contained" type="submit">
-                Create
-              </Button>
-            </Box>
-          </form>
+          <UserSearchbox onItemClick={createPrivateChat} />
+          <Box display="flex" justifyContent="space-between" mt={2}>
+            <Button
+              color="secondary"
+              variant="contained"
+              onClick={closePrivateDialog}
+            >
+              Cancel
+            </Button>
+          </Box>
         </Box>
       </Dialog>
       <Dialog open={isGroupDialogOpen} onClose={closeGroupDialog}>
