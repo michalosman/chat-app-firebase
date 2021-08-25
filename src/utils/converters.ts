@@ -2,41 +2,51 @@ import Group from '../types/Group'
 import Message from '../types/Message'
 import User from '../types/User'
 
-const convertToUser = (userJSON: any): User => {
-  const user: User = userJSON
+const convertDocToUser = (doc: any): User => {
+  const user: User = {
+    uid: doc.data().uid,
+    displayName: doc.data().displayName,
+    email: doc.data().email,
+    photoURL: doc.data().photoURL,
+  }
   return user
 }
 
-const convertToGroup = (groupJSON: any): Group => {
-  const group: Group = groupJSON
+const convertJSONToUser = (obj: any): User => {
+  const user: User = {
+    uid: obj.uid,
+    displayName: obj.displayName,
+    email: obj.email,
+    photoURL: obj.photoURL,
+  }
+  return user
+}
+
+const convertDocToGroup = (doc: any): Group => {
+  const group: Group = {
+    id: doc.id,
+    name: doc.data().name,
+    createdBy: doc.data().createdBy,
+    type: doc.data().type,
+    members: doc.data().members,
+    recentMessage: doc.data().recentMessage,
+  }
   return group
 }
 
-const convertToMessage = (messageJSON: any): Message => {
-  const message: Message = messageJSON
+const convertDocToMessage = (doc: any): Message => {
+  const message: Message = {
+    id: doc.id,
+    text: doc.data().text,
+    sentBy: doc.data().sentBy,
+    sentAt: doc.data().sentAt,
+  }
   return message
 }
 
-const convertToUsers = (users: any): User[] => {
-  if (!users) return []
-  return users.map((userJSON: any) => convertToUser(userJSON))
-}
-
-const convertToGroups = (groups: any): Group[] => {
-  if (!groups) return []
-  return groups.map((groupJSON: any) => convertToGroup(groupJSON))
-}
-
-const convertToMessages = (messages: any): Group[] => {
-  if (!messages) return []
-  return messages.map((groupJSON: any) => convertToGroup(groupJSON))
-}
-
 export {
-  convertToUser,
-  convertToGroup,
-  convertToMessage,
-  convertToUsers,
-  convertToGroups,
-  convertToMessages,
+  convertDocToUser,
+  convertJSONToUser,
+  convertDocToGroup,
+  convertDocToMessage,
 }

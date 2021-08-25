@@ -9,7 +9,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { setGroups, setUser } from './state/actions'
-import { convertToGroup, convertToUser } from './utils/converters'
+import { convertDocToGroup, convertDocToUser } from './utils/converters'
 import { USER_INIT_STATE } from './state/reducers/user'
 
 const App = () => {
@@ -25,7 +25,7 @@ const App = () => {
         .collection('users')
         .doc(user.uid)
         .onSnapshot((snapshot) =>
-          dispatch(setUser(convertToUser(snapshot.data())))
+          dispatch(setUser(convertDocToUser(snapshot)))
         )
 
       unsubscribeGroups = db
@@ -33,7 +33,9 @@ const App = () => {
         .where('members', 'array-contains', user.uid)
         .onSnapshot((snapshot) => {
           dispatch(
-            setGroups(snapshot.docs.map((doc) => convertToGroup(doc.data())))
+            setGroups(
+              snapshot.docs.map((doc) => convertDocToGroup(doc))
+            )
           )
         })
     } else {

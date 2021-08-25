@@ -1,11 +1,10 @@
 import { Avatar, Input, List, ListItem, makeStyles } from '@material-ui/core'
-import { useState } from 'react'
-import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { db } from '../firebase'
 import { AppState } from '../state/store/store'
 import User from '../types/User'
-import { convertToUsers } from '../utils/converters'
+import { convertDocToUser } from '../utils/converters'
 
 interface Props {
   onItemClick: (id: string) => void
@@ -44,9 +43,19 @@ const UserSearchbox = ({ onItemClick }: Props) => {
   const classes = useStyles()
   const currentUser: User = useSelector((state: AppState) => state.user)
   const [input, setInput] = useState('')
+  const [users, setUsers] = useState<User[]>([])
 
-  const usersQuery = db.collection('users').orderBy('displayName')
-  const users = convertToUsers(useCollectionData(usersQuery)[0])
+  useEffect(() => {
+    const unsubscribe = db
+      .collection('users')
+      .orderBy('displayName')
+      .onSnapshot((snapshot) =>
+        setUsers(snapshot.docs.map((doc) => convertDocToUser(doc)))
+      )
+    return () => {
+      unsubscribe()
+    }
+  }, [])
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.currentTarget.value)
