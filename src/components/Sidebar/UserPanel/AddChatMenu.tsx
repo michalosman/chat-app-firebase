@@ -19,7 +19,6 @@ import PeopleIcon from '@material-ui/icons/People'
 import UserSearchbox from '../../UserSearchbox'
 import { useSelector } from 'react-redux'
 import { AppState } from '../../../state/store/store'
-import User from '../../../types/User'
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -72,16 +71,21 @@ const AddChatMenu = () => {
 
   const createPrivateChat = (id: string) => {
     closePrivateDialog()
-    console.log(id)
+    db.collection('groups').add({
+      name: '',
+      type: 'private',
+      members: [id, user.uid],
+      createdBy: user.uid,
+    })
   }
 
   const createGroupChat = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     db.collection('groups').add({
       name: input,
-      ownerId: user.uid,
-      members: [user.uid],
       type: 'group',
+      members: [user.uid],
+      createdBy: user.uid,
     })
     closeGroupDialog()
   }
