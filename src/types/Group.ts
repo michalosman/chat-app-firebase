@@ -1,13 +1,12 @@
-import Message from "./Message";
+import Message from './Message'
 
 interface Group {
-  id: string
-  name: string
+  id?: string
+  name?: string
   type: string
   members: string[]
   createdBy: string
-  createdAt: string
-  recentMessage: Message
+  recentMessage?: Message
 }
 
 export default Group
