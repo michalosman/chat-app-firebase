@@ -75,7 +75,10 @@ const AddChatMenu = () => {
       name: '',
       type: 'private',
       members: [id, user.uid],
-      createdBy: user.uid,
+      createdBy: {
+        uid: user.uid,
+        displayName: user.displayName,
+      },
     })
   }
 
@@ -83,9 +86,12 @@ const AddChatMenu = () => {
     e.preventDefault()
     db.collection('groups').add({
       name: input,
-      type: 'group',
+      type: 'public',
       members: [user.uid],
-      createdBy: user.uid,
+      createdBy: {
+        uid: user.uid,
+        displayName: user.displayName,
+      },
     })
     closeGroupDialog()
   }

@@ -48,10 +48,10 @@ const GroupBox = ({ group, isActive, setActiveGroupID }: Props) => {
     return () => {
       unsubscribe()
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const formatRecentMessage = (message: string) => {
+  const formatMessage = (message: string) => {
     return message.length < 20 ? message : message.substr(0, 20) + '...'
   }
 
@@ -83,8 +83,10 @@ const GroupBox = ({ group, isActive, setActiveGroupID }: Props) => {
             </Typography>
             <Typography variant="caption" color="textSecondary" align="left">
               {group.recentMessage
-                ? `${formatRecentMessage(group.recentMessage.text)}`
-                : 'Chat created'}
+                ? `${formatMessage(group.recentMessage.text)}`
+                : `${formatMessage(
+                    group.createdBy.displayName
+                  )} created a chat`}
             </Typography>
           </Box>
         </Box>

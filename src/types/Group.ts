@@ -5,7 +5,10 @@ interface Group {
   name: string
   type: string
   members: string[]
-  createdBy: string
+  createdBy: {
+    uid: string
+    displayName: string
+  }
   recentMessage: Message
 }
 
