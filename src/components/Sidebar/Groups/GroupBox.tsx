@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Groups = ({ group, isActive, setActiveGroup }: Props) => {
+const GroupBox = ({ group, isActive, setActiveGroup }: Props) => {
   const classes = useStyles()
 
   return (
@@ -58,4 +58,4 @@ const Groups = ({ group, isActive, setActiveGroup }: Props) => {
   )
 }
 
-export default Groups
+export default GroupBox

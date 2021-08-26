@@ -1,7 +1,7 @@
 import { Box, makeStyles } from '@material-ui/core'
 import { AppState } from '../../../state/store/store'
 import { useSelector } from 'react-redux'
-import Group from './Group'
+import GroupBox from './GroupBox'
 import { useState } from 'react'
 
 const useStyles = makeStyles((theme) => ({
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Groups = () => {
+const GroupsPanel = () => {
   const classes = useStyles()
   const groups = useSelector((state: AppState) => state.groups)
   const [activeGroup, setActiveGroup] = useState('')
@@ -30,7 +30,7 @@ const Groups = () => {
       mr={1}
     >
       {groups.map((group) => (
-        <Group
+        <GroupBox
           key={group.id}
           group={group}
           isActive={activeGroup === group.id}
@@ -41,4 +41,4 @@ const Groups = () => {
   )
 }
 
-export default Groups
+export default GroupsPanel

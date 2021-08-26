@@ -1,3 +1,3 @@
-import Groups from './Groups'
+import GroupsPanel from './GroupsPanel'
 
-export default Groups
+export default GroupsPanel
