@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 const GroupsPanel = () => {
   const classes = useStyles()
   const groups = useSelector((state: AppState) => state.groups)
-  const [activeGroup, setActiveGroup] = useState('')
+  const [activeGroupID, setActiveGroupID] = useState('')
 
   return (
     <Box
@@ -33,8 +33,8 @@ const GroupsPanel = () => {
         <GroupBox
           key={group.id}
           group={group}
-          isActive={activeGroup === group.id}
-          setActiveGroup={setActiveGroup}
+          isActive={activeGroupID === group.id}
+          setActiveGroupID={setActiveGroupID}
         />
       ))}
     </Box>
