@@ -60,6 +60,8 @@ const CustomThemeProvider = ({ children }: Props) => {
         root: {
           paddingRight: defaultTheme.spacing(2),
           paddingLeft: defaultTheme.spacing(2),
+          paddingTop: defaultTheme.spacing(0.5),
+          paddingBottom: defaultTheme.spacing(0.5),
           borderRadius: '50px',
           backgroundColor: darkThemeEnabled
             ? defaultTheme.palette.action.disabled
