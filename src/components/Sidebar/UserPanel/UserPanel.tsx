@@ -1,5 +1,4 @@
 import { useSelector, useDispatch } from 'react-redux'
-import db from '../../../utils/db.json'
 import { toggleDarkTheme } from '../../../state/actions'
 import { AppState } from '../../../state/store/store'
 
@@ -36,17 +35,17 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const UserPanel = () => {
+  const classes = useStyles()
+  const dispatch = useDispatch()
+  const currentUser = useSelector((state: AppState) => state.user)
   const darkThemeEnabled = useSelector(
     (state: AppState) => state.darkThemeEnabled
   )
-  const dispatch = useDispatch()
-  const classes = useStyles()
-  const user = db.users[0]
 
   return (
     <Box display="flex" justifyContent="space-between" m={2} mb={1}>
       <Box className={classes.userInfo} display="flex" alignItems="center">
-        <Avatar src={`${user.photoURL}`} />
+        <Avatar src={`${currentUser.photoURL}`} />
         <Typography className={classes.title} variant="h5">
           Chats
         </Typography>
