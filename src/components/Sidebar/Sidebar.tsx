@@ -1,4 +1,4 @@
-import GroupsPanel from './Groups'
+import Groups from './Groups'
 import Search from './Search'
 import UserPanel from './UserPanel'
 
@@ -29,7 +29,7 @@ const Sidebar = () => {
     >
       <UserPanel />
       <Search />
-      <GroupsPanel />
+      <Groups />
     </Box>
   )
 }

@@ -1,3 +1,4 @@
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Chat from './components/Chat'
 import Sidebar from './components/Sidebar'
 import Login from './components/Login'
@@ -24,18 +25,14 @@ const App = () => {
       unsubscribeUser = db
         .collection('users')
         .doc(user.uid)
-        .onSnapshot((snapshot) =>
-          dispatch(setUser(convertDocToUser(snapshot)))
-        )
+        .onSnapshot((snapshot) => dispatch(setUser(convertDocToUser(snapshot))))
 
       unsubscribeGroups = db
         .collection('groups')
         .where('members', 'array-contains', user.uid)
         .onSnapshot((snapshot) => {
           dispatch(
-            setGroups(
-              snapshot.docs.map((doc) => convertDocToGroup(doc))
-            )
+            setGroups(snapshot.docs.map((doc) => convertDocToGroup(doc)))
           )
         })
     } else {
@@ -58,8 +55,12 @@ const App = () => {
         </Box>
       ) : user ? (
         <>
-          <Sidebar />
-          <Chat />
+          <Router>
+            <Route exact path={['/', '/:groupID']}>
+              <Sidebar />
+              <Chat />
+            </Route>
+          </Router>
         </>
       ) : (
         <Login />
