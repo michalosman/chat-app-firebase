@@ -8,12 +8,6 @@ import Group from '../../../types/Group'
 import User from '../../../types/User'
 import { convertDocToUser } from '../../../utils/converters'
 
-interface Props {
-  group: Group
-  isActive: boolean
-  setLoading: (loading: boolean) => void
-}
-
 const useStyles = makeStyles((theme) => ({
   button: {
     textTransform: 'none',
@@ -31,11 +25,13 @@ const useStyles = makeStyles((theme) => ({
   link: {
     textDecoration: 'none',
   },
-
-  displayNone: {
-    display: 'none',
-  },
 }))
+
+interface Props {
+  group: Group
+  isActive: boolean
+  setLoading: (loading: boolean) => void
+}
 
 const GroupBox = ({ group, isActive, setLoading }: Props) => {
   const classes = useStyles()
@@ -49,7 +45,7 @@ const GroupBox = ({ group, isActive, setLoading }: Props) => {
 
     if (group.type === 'private') {
       const otherUserID = group.members.filter(
-        (id) => id !== currentUser.uid
+        (memberID) => memberID !== currentUser.uid
       )[0]
       unsubscribe = db
         .collection('users')
@@ -73,43 +69,41 @@ const GroupBox = ({ group, isActive, setLoading }: Props) => {
   }
 
   return (
-    <div>
-      <Link className={classes.link} to={`/${group.id}`}>
-        <Button
-          className={`${classes.button} ${isActive ? classes.active : ''}`}
-          fullWidth
-        >
-          <Box display="flex" alignItems="center" width="100%" p={1}>
-            <Avatar
-              className={classes.avatar}
-              src={
-                group.type === 'public'
-                  ? `https://avatars.dicebear.com/api/initials/${group.name}.svg
+    <Link className={classes.link} to={`/${group.id}`}>
+      <Button
+        className={`${classes.button} ${isActive ? classes.active : ''}`}
+        fullWidth
+      >
+        <Box display="flex" alignItems="center" width="100%" p={1}>
+          <Avatar
+            className={classes.avatar}
+            src={
+              group.type === 'public'
+                ? `https://avatars.dicebear.com/api/initials/${group.name}.svg
     `
-                  : `${otherUser?.photoURL}`
-              }
-            />
-            <Box
-              display="flex"
-              flexDirection="column"
-              justifyContent="center"
-              ml={2}
-            >
-              <Typography align="left">
-                {group.type === 'public' ? group.name : otherUser?.displayName}
-              </Typography>
-              <Typography variant="caption" color="textSecondary" align="left">
-                {group.recentMessage
-                  ? `${formatMessage(group.recentMessage.text)}`
-                  : `${formatMessage(
-                      group.createdBy.displayName
-                    )} created a chat`}
-              </Typography>
-            </Box>
+                : `${otherUser?.photoURL}`
+            }
+          />
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            ml={2}
+          >
+            <Typography align="left">
+              {group.type === 'public' ? group.name : otherUser?.displayName}
+            </Typography>
+            <Typography variant="caption" color="textSecondary" align="left">
+              {group.recentMessage
+                ? `${formatMessage(group.recentMessage.text)}`
+                : `${formatMessage(
+                    group.createdBy.displayName
+                  )} created a chat`}
+            </Typography>
           </Box>
-        </Button>
-      </Link>
-    </div>
+        </Box>
+      </Button>
+    </Link>
   )
 }
 

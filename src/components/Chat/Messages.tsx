@@ -45,7 +45,7 @@ const Messages = () => {
   // get only last 30 messages to reduce usage
   const classes = useStyles()
   const groupMessages = db.groupMessages
-  const userId = 'u1'
+  const userID = 'u1'
   const messages = groupMessages[0].messages
 
   return (
@@ -61,14 +61,14 @@ const Messages = () => {
         <Box
           key={message.id}
           className={`${classes.message} ${
-            message.sentBy === userId ? classes.ownMessage : ''
+            message.sentBy === userID ? classes.ownMessage : ''
           }`}
           p={1}
           mt={4}
         >
           <Typography className={classes.messageInfo} variant="caption">
             {/* {message.sentBy} */}
-            {message.sentBy === userId ? 'You' : 'Michał'}
+            {message.sentBy === userID ? 'You' : 'Michał'}
           </Typography>
           <Typography className={classes.messageText}>
             {/* {message.text} */}

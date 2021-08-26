@@ -6,10 +6,6 @@ import { AppState } from '../state/store/store'
 import User from '../types/User'
 import { convertDocToUser } from '../utils/converters'
 
-interface Props {
-  onItemClick: (id: string) => void
-}
-
 const useStyles = makeStyles((theme) => ({
   input: {
     height: '38px',
@@ -38,6 +34,10 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
   },
 }))
+
+interface Props {
+  onItemClick: (id: string) => void
+}
 
 const UserSearchbox = ({ onItemClick }: Props) => {
   const classes = useStyles()
@@ -81,13 +81,13 @@ const UserSearchbox = ({ onItemClick }: Props) => {
           }
         >
           <Avatar className={classes.avatar} src={user.photoURL} />
-          <div>{user.displayName}</div>
+          {user.displayName}
         </ListItem>
       ))
     : []
 
   return (
-    <div>
+    <>
       <Input
         className={classes.input}
         placeholder="Search person"
@@ -102,7 +102,7 @@ const UserSearchbox = ({ onItemClick }: Props) => {
         {usersList}
         {usersList}
       </List>
-    </div>
+    </>
   )
 }
 
