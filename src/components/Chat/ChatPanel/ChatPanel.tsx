@@ -1,7 +1,14 @@
+import { useSelector } from 'react-redux'
+import { AppState } from '../../../state/store/store'
 import PrivateMenu from './PrivateMenu'
 import GroupMenu from './GroupMenu'
 
 import { Avatar, Box, makeStyles, Typography } from '@material-ui/core'
+import { useEffect, useState } from 'react'
+import User from '../../../types/User'
+import { db } from '../../../firebase'
+import { convertDocToUser } from '../../../utils/converters'
+import { useParams } from 'react-router-dom'
 
 const useStyles = makeStyles(() => ({
   bold: {
@@ -9,11 +16,46 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const ChatPanel = () => {
-  const classes = useStyles()
-  const isPrivate = false
+interface Props {
+  setLoading: (loading: boolean) => void
+}
 
-  return (
+const ChatPanel = ({ setLoading }: Props) => {
+  const classes = useStyles()
+  const currentUser = useSelector((state: AppState) => state.user)
+  const [otherUser, setOtherUser] = useState<User>()
+  const { groupID } = useParams<{ groupID: string }>()
+  const groups = useSelector((state: AppState) => state.groups)
+  const group = groups.filter((group) => group.id === groupID)[0]
+
+  useEffect(() => {
+    let unsubscribe = () => {}
+
+    setLoading(true)
+
+    if (group) {
+      if (group.type === 'private') {
+        const otherUserID = group.members.filter(
+          (memberID) => memberID !== currentUser.uid
+        )[0]
+        db.collection('users')
+          .doc(otherUserID)
+          .onSnapshot((snapshot) => {
+            setOtherUser(convertDocToUser(snapshot))
+            setLoading(false)
+          })
+      } else {
+        setLoading(false)
+      }
+    }
+
+    return () => {
+      unsubscribe()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [group])
+
+  return group ? (
     <Box
       display="flex"
       justifyContent="space-between"
@@ -27,16 +69,26 @@ const ChatPanel = () => {
       borderColor={'divider'}
     >
       <Box display="flex" alignItems="center">
-        <Avatar />
+        <Avatar
+          src={
+            group.type === 'private'
+              ? otherUser?.photoURL
+              : `https://avatars.dicebear.com/api/initials/${group.name}.svg`
+          }
+        />
         <Box ml={2}>
-          <Typography className={classes.bold}>User Name</Typography>
+          <Typography className={classes.bold}>
+            {group.type === 'private' ? otherUser?.displayName : group.name}
+          </Typography>
           <Typography variant="caption" color="textSecondary">
             Last message sent
           </Typography>
         </Box>
       </Box>
-      {isPrivate ? <PrivateMenu /> : <GroupMenu />}
+      {group.type === 'private' ? <PrivateMenu /> : <GroupMenu />}
     </Box>
+  ) : (
+    <></>
   )
 }
 
