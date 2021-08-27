@@ -38,7 +38,8 @@ const ChatPanel = ({ setLoading }: Props) => {
         const otherUserID = group.members.filter(
           (memberID) => memberID !== currentUser.uid
         )[0]
-        db.collection('users')
+        unsubscribe = db
+          .collection('users')
           .doc(otherUserID)
           .onSnapshot((snapshot) => {
             setOtherUser(convertDocToUser(snapshot))

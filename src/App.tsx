@@ -50,7 +50,7 @@ const App = () => {
   return (
     <Box display="flex" height="100vh">
       {loading ? (
-        <Box margin="auto">
+        <Box m="auto">
           <CircularProgress size="150px" />
         </Box>
       ) : user ? (

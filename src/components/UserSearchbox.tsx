@@ -41,7 +41,7 @@ interface Props {
 
 const UserSearchbox = ({ onItemClick }: Props) => {
   const classes = useStyles()
-  const currentUser: User = useSelector((state: AppState) => state.user)
+  const currentUser = useSelector((state: AppState) => state.user)
   const [input, setInput] = useState('')
   const [users, setUsers] = useState<User[]>([])
 
@@ -69,22 +69,20 @@ const UserSearchbox = ({ onItemClick }: Props) => {
     // TODO: If already exists then open chat window / don't suggest user
   }
 
-  const usersList = users
-    ? filterResults(input, users).map((user) => (
-        <ListItem
-          key={user.uid}
-          id={user.uid}
-          className={classes.li}
-          button
-          onClick={(e: React.MouseEvent<HTMLDivElement>) =>
-            onItemClick(e.currentTarget.id)
-          }
-        >
-          <Avatar className={classes.avatar} src={user.photoURL} />
-          {user.displayName}
-        </ListItem>
-      ))
-    : []
+  const usersList = filterResults(input, users).map((user) => (
+    <ListItem
+      key={user.uid}
+      id={user.uid}
+      className={classes.li}
+      button
+      onClick={(e: React.MouseEvent<HTMLDivElement>) =>
+        onItemClick(e.currentTarget.id)
+      }
+    >
+      <Avatar className={classes.avatar} src={user.photoURL} />
+      {user.displayName}
+    </ListItem>
+  ))
 
   return (
     <>
@@ -96,12 +94,7 @@ const UserSearchbox = ({ onItemClick }: Props) => {
         disableUnderline
         required
       />
-      <List className={classes.list}>
-        {usersList}
-        {usersList}
-        {usersList}
-        {usersList}
-      </List>
+      <List className={classes.list}>{usersList}</List>
     </>
   )
 }

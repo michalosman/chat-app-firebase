@@ -35,7 +35,7 @@ const AddChatMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [isPrivateDialogOpen, setIsPrivateDialogOpen] = useState(false)
   const [isGroupDialogOpen, setIsGroupDialogOpen] = useState(false)
-  const [input, setInput] = useState('')
+  const [groupDialogInput, setGroupDialogInput] = useState('')
 
   const openMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget)
@@ -52,7 +52,6 @@ const AddChatMenu = () => {
 
   const closePrivateDialog = () => {
     setIsPrivateDialogOpen(false)
-    setInput('')
   }
 
   const openGroupDialog = () => {
@@ -62,15 +61,14 @@ const AddChatMenu = () => {
 
   const closeGroupDialog = () => {
     setIsGroupDialogOpen(false)
-    setInput('')
+    setGroupDialogInput('')
   }
 
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(e.currentTarget.value)
+  const handleGroupDialogInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setGroupDialogInput(e.currentTarget.value)
   }
 
   const createPrivateChat = (id: string) => {
-    closePrivateDialog()
     db.collection('groups').add({
       name: '',
       type: 'private',
@@ -80,12 +78,13 @@ const AddChatMenu = () => {
         displayName: user.displayName,
       },
     })
+    closePrivateDialog()
   }
 
   const createGroupChat = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     db.collection('groups').add({
-      name: input,
+      name: groupDialogInput,
       type: 'public',
       members: [user.uid],
       createdBy: {
@@ -123,16 +122,14 @@ const AddChatMenu = () => {
       <Dialog open={isPrivateDialogOpen} onClose={closePrivateDialog}>
         <Box p={2}>
           <UserSearchbox onItemClick={createPrivateChat} />
-          <Box display="flex" justifyContent="space-between" mt={2}>
-            <Button
-              color="secondary"
-              variant="contained"
-              onClick={closePrivateDialog}
-              fullWidth
-            >
-              Cancel
-            </Button>
-          </Box>
+          <Button
+            color="secondary"
+            variant="contained"
+            onClick={closePrivateDialog}
+            fullWidth
+          >
+            Cancel
+          </Button>
         </Box>
       </Dialog>
       <Dialog open={isGroupDialogOpen} onClose={closeGroupDialog}>
@@ -141,8 +138,8 @@ const AddChatMenu = () => {
             <Input
               className={classes.input}
               placeholder="Group name"
-              onChange={handleInput}
-              value={input}
+              onChange={handleGroupDialogInput}
+              value={groupDialogInput}
               disableUnderline
               required
             />

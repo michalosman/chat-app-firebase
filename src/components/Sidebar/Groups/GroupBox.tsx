@@ -40,7 +40,6 @@ const GroupBox = ({ group, isActive, setLoading }: Props) => {
 
   useEffect(() => {
     let unsubscribe = () => {}
-
     setLoading(true)
 
     if (group.type === 'private') {
@@ -98,7 +97,7 @@ const GroupBox = ({ group, isActive, setLoading }: Props) => {
                 ? `${formatMessage(group.recentMessage.text)}`
                 : `${formatMessage(
                     group.createdBy.displayName
-                  )} created a chat`}
+                  )} started a chat`}
             </Typography>
           </Box>
         </Box>

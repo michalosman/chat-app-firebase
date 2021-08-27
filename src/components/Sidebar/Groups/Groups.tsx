@@ -20,14 +20,14 @@ const useStyles = makeStyles((theme) => ({
 const Groups = () => {
   const classes = useStyles()
   const groups = useSelector((state: AppState) => state.groups)
-  const { groupID: activeGroupID } = useParams<{ groupID: string }>()
+  const { groupID } = useParams<{ groupID: string }>()
   const [loading, setLoading] = useState(true)
 
   const groupBoxes = groups.map((group) => (
     <GroupBox
       key={group.id}
       group={group}
-      isActive={activeGroupID === group.id}
+      isActive={groupID === group.id}
       setLoading={setLoading}
     />
   ))
