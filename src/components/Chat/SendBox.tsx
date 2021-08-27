@@ -1,8 +1,13 @@
+import firebase from 'firebase/app'
 import { useState } from 'react'
 
 import { Box, IconButton, Input, makeStyles } from '@material-ui/core'
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions'
 import SendIcon from '@material-ui/icons/Send'
+import { useParams } from 'react-router-dom'
+import { db } from '../../firebase'
+import { useSelector } from 'react-redux'
+import { AppState } from '../../state/store/store'
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -19,11 +24,19 @@ const useStyles = makeStyles((theme) => ({
 const SendBox = () => {
   const classes = useStyles()
   const [input, setInput] = useState('')
+  const { groupID } = useParams<{ groupID: string }>()
+  const currentUser = useSelector((state: AppState) => state.user)
 
   const sendMessage = (e: React.FormEvent) => {
     e.preventDefault()
     if (input === '') return
-    console.log('message ', input)
+
+    db.collection('groupMessages').doc(groupID).collection('messages').add({
+      text: input,
+      sentBy: currentUser.uid,
+      sentAt: firebase.firestore.FieldValue.serverTimestamp(),
+    })
+
     setInput('')
   }
 

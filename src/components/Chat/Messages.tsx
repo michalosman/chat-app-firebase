@@ -1,4 +1,10 @@
-import db from '../../utils/db.json'
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { db } from '../../firebase'
+import Message from '../../types/Message'
+import { AppState } from '../../state/store/store'
+import { convertDocToMessage } from '../../utils/converters'
 
 import { Box, makeStyles, Typography } from '@material-ui/core'
 
@@ -41,12 +47,26 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const Messages = () => {
-  // sort messages desc Date cause of column-reverse
-  // get only last 30 messages to reduce usage
   const classes = useStyles()
-  const groupMessages = db.groupMessages
-  const userID = 'u1'
-  const messages = groupMessages[0].messages
+  const currentUser = useSelector((state: AppState) => state.user)
+  const { groupID } = useParams<{ groupID: string }>()
+  const [messages, setMessages] = useState<Message[]>([])
+
+  useEffect(() => {
+    const unsubscribe = db
+      .collection('groupMessages')
+      .doc(groupID)
+      .collection('messages')
+      .orderBy('sentAt', 'desc')
+      .onSnapshot((snapshot) => {
+        const messages = snapshot.docs.map((doc) => convertDocToMessage(doc))
+        setMessages(messages)
+      })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [groupID])
 
   return (
     <Box
@@ -61,18 +81,18 @@ const Messages = () => {
         <Box
           key={message.id}
           className={`${classes.message} ${
-            message.sentBy === userID ? classes.ownMessage : ''
+            message.sentBy === currentUser.uid ? classes.ownMessage : ''
           }`}
           p={1}
           mt={4}
         >
           <Typography className={classes.messageInfo} variant="caption">
-            {/* {message.sentBy} */}
-            {message.sentBy === userID ? 'You' : 'Michał'}
+            {message.sentBy === currentUser.uid
+              ? 'You'
+              : 'otheruser.displayname'}
           </Typography>
           <Typography className={classes.messageText}>
-            {/* {message.text} */}
-            Message
+            {message.text}
           </Typography>
         </Box>
       ))}
