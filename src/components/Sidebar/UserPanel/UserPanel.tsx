@@ -5,6 +5,7 @@ import { AppState } from '../../../state/store/store'
 import {
   Avatar,
   Box,
+  CircularProgress,
   IconButton,
   makeStyles,
   Typography,
@@ -45,7 +46,11 @@ const UserPanel = () => {
   return (
     <Box display="flex" justifyContent="space-between" m={2} mb={1}>
       <Box className={classes.userInfo} display="flex" alignItems="center">
-        <Avatar src={`${currentUser.photoURL}`} />
+        {currentUser.photoURL ? (
+          <Avatar src={`${currentUser.photoURL}`} />
+        ) : (
+          <CircularProgress size="40px" />
+        )}
         <Typography className={classes.title} variant="h5">
           Chats
         </Typography>
