@@ -8,7 +8,13 @@ import { db } from '../../../firebase'
 import { convertDocToUser } from '../../../utils/converters'
 import { AppState } from '../../../state/store/store'
 
-import { Avatar, Box, makeStyles, Typography } from '@material-ui/core'
+import {
+  Avatar,
+  Box,
+  CircularProgress,
+  makeStyles,
+  Typography,
+} from '@material-ui/core'
 
 const useStyles = makeStyles(() => ({
   bold: {
@@ -16,28 +22,26 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-interface Props {
-  setLoading: (loading: boolean) => void
-}
-
-const ChatPanel = ({ setLoading }: Props) => {
+const ChatPanel = () => {
   const classes = useStyles()
   const currentUser = useSelector((state: AppState) => state.user)
   const [otherUser, setOtherUser] = useState<User>()
   const { groupID } = useParams<{ groupID: string }>()
   const groups = useSelector((state: AppState) => state.groups)
   const group = groups.filter((group) => group.id === groupID)[0]
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     let unsubscribe = () => {}
 
-    setLoading(true)
-
     if (group) {
       if (group.type === 'private') {
+        setLoading(true)
+
         const otherUserID = group.members.filter(
           (memberID) => memberID !== currentUser.uid
         )[0]
+
         unsubscribe = db
           .collection('users')
           .doc(otherUserID)
@@ -46,6 +50,7 @@ const ChatPanel = ({ setLoading }: Props) => {
             setLoading(false)
           })
       } else {
+        setOtherUser(undefined)
         setLoading(false)
       }
     }
@@ -56,11 +61,8 @@ const ChatPanel = ({ setLoading }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [group])
 
-  return group ? (
+  return (
     <Box
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
       px={2}
       py={1}
       border={1}
@@ -69,27 +71,31 @@ const ChatPanel = ({ setLoading }: Props) => {
       borderLeft={0}
       borderColor={'divider'}
     >
-      <Box display="flex" alignItems="center">
-        <Avatar
-          src={
-            group.type === 'private'
-              ? otherUser?.photoURL
-              : `https://avatars.dicebear.com/api/initials/${group.name}.svg`
-          }
-        />
-        <Box ml={2}>
-          <Typography className={classes.bold}>
-            {group.type === 'private' ? otherUser?.displayName : group.name}
-          </Typography>
-          <Typography variant="caption" color="textSecondary">
-            Last message sent
-          </Typography>
+      {group && !loading ? (
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Box display="flex">
+            <Avatar
+              src={
+                group.type === 'private'
+                  ? otherUser?.photoURL
+                  : `https://avatars.dicebear.com/api/initials/${group.name}.svg`
+              }
+            />
+            <Box ml={2}>
+              <Typography className={classes.bold}>
+                {group.type === 'private' ? otherUser?.displayName : group.name}
+              </Typography>
+              <Typography variant="caption" color="textSecondary">
+                Last message sent
+              </Typography>
+            </Box>
+          </Box>
+          {group.type === 'private' ? <PrivateMenu /> : <GroupMenu />}
         </Box>
-      </Box>
-      {group.type === 'private' ? <PrivateMenu /> : <GroupMenu />}
+      ) : (
+        <CircularProgress size="43px" />
+      )}
     </Box>
-  ) : (
-    <></>
   )
 }
 

@@ -41,12 +41,14 @@ const GroupBox = ({ group, isActive, setLoading }: Props) => {
 
   useEffect(() => {
     let unsubscribe = () => {}
-    setLoading(true)
 
     if (group.type === 'private') {
+      setLoading(true)
+
       const otherUserID = group.members.filter(
         (memberID) => memberID !== currentUser.uid
       )[0]
+
       unsubscribe = db
         .collection('users')
         .doc(otherUserID)
