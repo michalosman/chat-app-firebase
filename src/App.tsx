@@ -54,14 +54,12 @@ const App = () => {
           <CircularProgress size="150px" />
         </Box>
       ) : user ? (
-        <>
-          <Router>
-            <Route exact path={['/', '/:groupID']}>
-              <Sidebar />
-              <Chat />
-            </Route>
-          </Router>
-        </>
+        <Router>
+          <Route exact path={['/', '/:groupID']}>
+            <Sidebar />
+            <Chat />
+          </Route>
+        </Router>
       ) : (
         <Login />
       )}
