@@ -1,9 +1,10 @@
-import { Box, CircularProgress, makeStyles } from '@material-ui/core'
-import { AppState } from '../../../state/store/store'
-import { useSelector } from 'react-redux'
-import GroupBox from './GroupBox'
-import { useParams } from 'react-router-dom'
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import GroupBox from './GroupBox'
+import { AppState } from '../../../state/store/store'
+
+import { Box, CircularProgress, makeStyles } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
   scrollBox: {

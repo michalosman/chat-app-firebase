@@ -1,4 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
+import AddChatMenu from './AddChatMenu'
+import OptionsMenu from './OptionsMenu'
 import { toggleDarkTheme } from '../../../state/actions'
 import { AppState } from '../../../state/store/store'
 
@@ -12,8 +14,6 @@ import {
 } from '@material-ui/core'
 import Brightness2Icon from '@material-ui/icons/Brightness2'
 import WbSunnyIcon from '@material-ui/icons/WbSunny'
-import AddChatMenu from './AddChatMenu'
-import OptionsMenu from './OptionsMenu'
 
 const useStyles = makeStyles((theme) => ({
   userInfo: {

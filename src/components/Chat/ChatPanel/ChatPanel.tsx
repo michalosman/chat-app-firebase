@@ -1,14 +1,14 @@
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { AppState } from '../../../state/store/store'
+import User from '../../../types/User'
 import PrivateMenu from './PrivateMenu'
 import GroupMenu from './GroupMenu'
-
-import { Avatar, Box, makeStyles, Typography } from '@material-ui/core'
-import { useEffect, useState } from 'react'
-import User from '../../../types/User'
 import { db } from '../../../firebase'
 import { convertDocToUser } from '../../../utils/converters'
-import { useParams } from 'react-router-dom'
+import { AppState } from '../../../state/store/store'
+
+import { Avatar, Box, makeStyles, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles(() => ({
   bold: {

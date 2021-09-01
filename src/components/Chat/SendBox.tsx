@@ -1,13 +1,13 @@
-import firebase from 'firebase/app'
 import { useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import firebase from 'firebase/app'
+import { db } from '../../firebase'
+import { AppState } from '../../state/store/store'
 
 import { Box, IconButton, Input, makeStyles } from '@material-ui/core'
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions'
 import SendIcon from '@material-ui/icons/Send'
-import { useParams } from 'react-router-dom'
-import { db } from '../../firebase'
-import { useSelector } from 'react-redux'
-import { AppState } from '../../state/store/store'
 
 const useStyles = makeStyles((theme) => ({
   form: {

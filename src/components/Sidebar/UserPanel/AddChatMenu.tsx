@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
+import UserSearchbox from '../../UserSearchbox'
 import { db } from '../../../firebase'
+import { AppState } from '../../../state/store/store'
 
 import {
   Dialog,
@@ -16,9 +19,6 @@ import {
 import AddIcon from '@material-ui/icons/Add'
 import PersonIcon from '@material-ui/icons/Person'
 import PeopleIcon from '@material-ui/icons/People'
-import UserSearchbox from '../../UserSearchbox'
-import { useSelector } from 'react-redux'
-import { AppState } from '../../../state/store/store'
 
 const useStyles = makeStyles((theme) => ({
   input: {

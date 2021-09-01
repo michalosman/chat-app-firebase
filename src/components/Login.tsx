@@ -1,6 +1,6 @@
-import { auth, db, provider } from '../firebase'
 import firebase from 'firebase/app'
 import logo from '../assets/logo192.png'
+import { auth, db, provider } from '../firebase'
 
 import { Box, Button, makeStyles, Typography } from '@material-ui/core'
 

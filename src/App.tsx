@@ -1,17 +1,17 @@
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { useAuthState } from 'react-firebase-hooks/auth'
 import Chat from './components/Chat'
 import Sidebar from './components/Sidebar'
 import Login from './components/Login'
-import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth, db } from './firebase'
-
-import { Box } from '@material-ui/core'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
 import { setGroups, setUser } from './state/actions'
 import { convertDocToGroup, convertDocToUser } from './utils/converters'
 import { USER_INIT_STATE } from './state/reducers/user'
+
+import { Box } from '@material-ui/core'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 const App = () => {
   const [user, loading] = useAuthState(auth)

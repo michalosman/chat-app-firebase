@@ -1,12 +1,13 @@
-import { Avatar, Box, Button, Typography, makeStyles } from '@material-ui/core'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { db } from '../../../firebase'
-import { AppState } from '../../../state/store/store'
 import Group from '../../../types/Group'
 import User from '../../../types/User'
+import { db } from '../../../firebase'
+import { AppState } from '../../../state/store/store'
 import { convertDocToUser } from '../../../utils/converters'
+
+import { Avatar, Box, Button, Typography, makeStyles } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
   button: {

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { db } from '../../firebase'
 import Message from '../../types/Message'
+import { db } from '../../firebase'
 import { AppState } from '../../state/store/store'
 import { convertDocToMessage } from '../../utils/converters'
 
