@@ -4,7 +4,7 @@ import User from './User'
 
 export const SET_USER = 'SET_USER'
 export const SET_GROUPS = 'SET_GROUPS'
-export const SET_MESSAGES = 'SET_MESSAGES'
+export const SET_PRIVATE_CHATS_USERS = 'SET_PRIVATE_CHATS_USERS'
 export const TOGGLE_DARKTHEME = 'TOGGLE_DARKTHEME'
 
 export interface SetUserAction {
@@ -17,9 +17,9 @@ export interface SetGroupsAction {
   groups: Group[]
 }
 
-export interface SetMessagesAction {
-  type: typeof SET_MESSAGES
-  messages: Message[]
+export interface SetPrivateChatsUsersAction {
+  type: typeof SET_PRIVATE_CHATS_USERS
+  users: User[]
 }
 
 export interface ToggleDarkThemeAction {
@@ -28,11 +28,11 @@ export interface ToggleDarkThemeAction {
 
 export type UserAction = SetUserAction
 export type GroupsAction = SetGroupsAction
-export type MessagesAction = SetMessagesAction
+export type PrivateChatsUsersAction = SetPrivateChatsUsersAction
 export type DarkThemeEnabledAction = ToggleDarkThemeAction
 
 export type AppAction =
   | UserAction
   | GroupsAction
-  | MessagesAction
+  | PrivateChatsUsersAction
   | DarkThemeEnabledAction

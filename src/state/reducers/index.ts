@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux'
 import userReducer from './user'
 import groupsReducer from './groups'
-import messagesReducer from './messages'
+import privateChatsUsersReducer from './privateChatsUsers'
 import darkThemeEnabledReducer from './darkThemeEnabled'
 
 const rootReducer = combineReducers({
   user: userReducer,
   groups: groupsReducer,
-  messages: messagesReducer,
+  privateChatsUsers: privateChatsUsersReducer,
   darkThemeEnabled: darkThemeEnabledReducer,
 })
 
