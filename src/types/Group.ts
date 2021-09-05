@@ -1,5 +1,3 @@
-import Message from './Message'
-
 interface Group {
   id: string
   name: string
@@ -9,7 +7,14 @@ interface Group {
     uid: string
     displayName: string
   }
-  recentMessage: Message
+  recentMessage: {
+    text: string
+    sentBy: {
+      uid: string
+      displayName: string
+    }
+    sentAt: string
+  }
 }
 
 export default Group

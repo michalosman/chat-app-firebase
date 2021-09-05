@@ -31,11 +31,34 @@ const SendBox = () => {
     e.preventDefault()
     if (input === '') return
 
-    db.collection('groupMessages').doc(groupID).collection('messages').add({
-      text: input,
-      sentBy: currentUser.uid,
-      sentAt: firebase.firestore.FieldValue.serverTimestamp(),
-    })
+    db.collection('groupMessages')
+      .doc(groupID)
+      .collection('messages')
+      .add({
+        text: input,
+        sentAt: firebase.firestore.FieldValue.serverTimestamp(),
+        sentBy: {
+          uid: currentUser.uid,
+          displayName: currentUser.displayName,
+        },
+      })
+
+    //set recent message
+    db.collection('groups')
+      .doc(groupID)
+      .set(
+        {
+          recentMessage: {
+            text: input,
+            sentAt: firebase.firestore.FieldValue.serverTimestamp(),
+            sentBy: {
+              uid: currentUser.uid,
+              displayName: currentUser.displayName,
+            },
+          },
+        },
+        { merge: true }
+      )
 
     setInput('')
   }

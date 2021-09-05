@@ -36,8 +36,6 @@ const ChatPanel = () => {
 
     if (group) {
       if (group.type === 'private') {
-        setLoading(true)
-
         const otherUserID = group.members.filter(
           (memberID) => memberID !== currentUser.uid
         )[0]
@@ -73,7 +71,7 @@ const ChatPanel = () => {
     >
       {group && !loading ? (
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Box display="flex">
+          <Box display="flex" alignItems="center">
             <Avatar
               src={
                 group.type === 'private'
@@ -81,12 +79,9 @@ const ChatPanel = () => {
                   : `https://avatars.dicebear.com/api/initials/${group.name}.svg`
               }
             />
-            <Box ml={2}>
+            <Box ml={1}>
               <Typography className={classes.bold}>
                 {group.type === 'private' ? otherUser?.displayName : group.name}
-              </Typography>
-              <Typography variant="caption" color="textSecondary">
-                Last message sent
               </Typography>
             </Box>
           </Box>

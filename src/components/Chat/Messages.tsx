@@ -81,15 +81,15 @@ const Messages = () => {
         <Box
           key={message.id}
           className={`${classes.message} ${
-            message.sentBy === currentUser.uid ? classes.ownMessage : ''
+            message.sentBy.uid === currentUser.uid ? classes.ownMessage : ''
           }`}
           p={1}
           mt={4}
         >
           <Typography className={classes.messageInfo} variant="caption">
-            {message.sentBy === currentUser.uid
+            {message.sentBy.uid === currentUser.uid
               ? 'You'
-              : 'otheruser.displayname'}
+              : message.sentBy.displayName}
           </Typography>
           <Typography className={classes.messageText}>
             {message.text}
