@@ -36,13 +36,12 @@ const App = () => {
         .collection('groups')
         .where('members', 'array-contains', user.uid)
         .onSnapshot((snapshot) => {
-          dispatch(
-            setGroups(snapshot.docs.map((doc) => convertDocToGroup(doc)))
-          )
+          const groups = snapshot.docs.map((doc) => convertDocToGroup(doc))
+          dispatch(setGroups(groups))
 
-          const privateGroups = snapshot.docs
-            .map((doc) => convertDocToGroup(doc))
-            .filter((group) => group.type === 'private')
+          const privateGroups = groups.filter(
+            (group) => group.type === 'private'
+          )
 
           if (privateGroups.length !== privateChatsUsers.length) {
             db.collection('users')
