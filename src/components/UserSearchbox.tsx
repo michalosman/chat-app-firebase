@@ -44,6 +44,9 @@ const UserSearchbox = ({ onItemClick }: Props) => {
   const currentUser = useSelector((state: AppState) => state.user)
   const [input, setInput] = useState('')
   const [users, setUsers] = useState<User[]>([])
+  const privateChatsUsers = useSelector(
+    (state: AppState) => state.privateChatsUsers
+  )
 
   useEffect(() => {
     const unsubscribe = db
@@ -64,9 +67,14 @@ const UserSearchbox = ({ onItemClick }: Props) => {
   const filterResults = (word: string, users: User[]) => {
     const regex = new RegExp(word, 'gi')
     return users.filter(
-      (user) => user.displayName.match(regex) && user.uid !== currentUser.uid
+      (user) =>
+        user.displayName.match(regex) &&
+        user.uid !== currentUser.uid &&
+        !privateChatsUsers.find(
+          (alreadyCreatedPrivateChatUser) =>
+            alreadyCreatedPrivateChatUser.uid === user.uid
+        )
     )
-    // TODO: If already exists then open chat window / don't suggest user
   }
 
   const usersList = filterResults(input, users).map((user) => (

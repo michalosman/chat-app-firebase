@@ -36,6 +36,9 @@ const AddChatMenu = () => {
   const [isPrivateDialogOpen, setIsPrivateDialogOpen] = useState(false)
   const [isGroupDialogOpen, setIsGroupDialogOpen] = useState(false)
   const [groupDialogInput, setGroupDialogInput] = useState('')
+  const privateChatsUsers = useSelector(
+    (state: AppState) => state.privateChatsUsers
+  )
 
   const openMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget)
@@ -69,6 +72,8 @@ const AddChatMenu = () => {
   }
 
   const createPrivateChat = (id: string) => {
+    if (privateChatsUsers.find((user) => user.uid === id)) return
+
     db.collection('groups').add({
       name: '',
       type: 'private',
