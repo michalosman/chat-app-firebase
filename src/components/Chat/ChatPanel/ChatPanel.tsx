@@ -24,40 +24,35 @@ const useStyles = makeStyles(() => ({
 
 const ChatPanel = () => {
   const classes = useStyles()
-  const currentUser = useSelector((state: AppState) => state.user)
-  const [otherUser, setOtherUser] = useState<User>()
   const { groupID } = useParams<{ groupID: string }>()
+  const currentUser = useSelector((state: AppState) => state.user)
   const groups = useSelector((state: AppState) => state.groups)
+  const privateChatsUsers = useSelector(
+    (state: AppState) => state.privateChatsUsers
+  )
   const group = groups.filter((group) => group.id === groupID)[0]
+  const [otherMember, setOtherMember] = useState<User>()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    let unsubscribe = () => {}
-
     if (group) {
       if (group.type === 'private') {
-        const otherUserID = group.members.filter(
-          (memberID) => memberID !== currentUser.uid
-        )[0]
-
-        unsubscribe = db
-          .collection('users')
-          .doc(otherUserID)
-          .onSnapshot((snapshot) => {
-            setOtherUser(convertDocToUser(snapshot))
-            setLoading(false)
-          })
+        if (privateChatsUsers.length > 0) {
+          const otherMemberID = group.members.filter(
+            (memberID) => memberID !== currentUser.uid
+          )[0]
+          const otherMember = privateChatsUsers.find(
+            (user) => user.uid === otherMemberID
+          )
+          setOtherMember(otherMember)
+          setLoading(false)
+        }
       } else {
-        setOtherUser(undefined)
+        setOtherMember(undefined)
         setLoading(false)
       }
     }
-
-    return () => {
-      unsubscribe()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [group])
+  }, [group, privateChatsUsers, currentUser])
 
   return (
     <Box
@@ -69,26 +64,28 @@ const ChatPanel = () => {
       borderLeft={0}
       borderColor={'divider'}
     >
-      {group && !loading ? (
+      {loading ? (
+        <CircularProgress size="43px" />
+      ) : (
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box display="flex" alignItems="center">
             <Avatar
               src={
                 group.type === 'private'
-                  ? otherUser?.photoURL
+                  ? otherMember?.photoURL
                   : `https://avatars.dicebear.com/api/initials/${group.name}.svg`
               }
             />
             <Box ml={1}>
               <Typography className={classes.bold}>
-                {group.type === 'private' ? otherUser?.displayName : group.name}
+                {group.type === 'private'
+                  ? otherMember?.displayName
+                  : group.name}
               </Typography>
             </Box>
           </Box>
           {group.type === 'private' ? <PrivateMenu /> : <GroupMenu />}
         </Box>
-      ) : (
-        <CircularProgress size="43px" />
       )}
     </Box>
   )
