@@ -58,10 +58,9 @@ const Messages = () => {
       .doc(groupID)
       .collection('messages')
       .orderBy('sentAt', 'desc')
-      .onSnapshot((snapshot) => {
-        const messages = snapshot.docs.map((doc) => convertDocToMessage(doc))
-        setMessages(messages)
-      })
+      .onSnapshot((snapshot) =>
+        setMessages(snapshot.docs.map((doc) => convertDocToMessage(doc)))
+      )
 
     return () => {
       unsubscribe()
