@@ -13,6 +13,7 @@ import { USER_INIT_STATE } from './state/reducers/user'
 import { Box } from '@material-ui/core'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { AppState } from './state/store/store'
+import User from './types/User'
 
 const App = () => {
   const [user, loading] = useAuthState(auth)
@@ -39,20 +40,29 @@ const App = () => {
             setGroups(snapshot.docs.map((doc) => convertDocToGroup(doc)))
           )
 
-          const privateChats = snapshot.docs
+          const privateGroups = snapshot.docs
             .map((doc) => convertDocToGroup(doc))
             .filter((group) => group.type === 'private')
 
-          if (privateChats.length !== privateChatsUsers.length) {
+          if (privateGroups.length !== privateChatsUsers.length) {
             db.collection('users')
               .get()
               .then((snapshot) => {
-                const users = snapshot.docs.map((doc) => doc.data())
-                // TODO
-                // get all otherUsers IDs from privateChats
-                // filter users to contain only above
-                // dispatch
-                dispatch(setPrivateChatsUsers([]))
+                const users = snapshot.docs.map((doc) => convertDocToUser(doc))
+                const newPrivateChatsUsers: User[] = []
+
+                for (const group of privateGroups) {
+                  const otherMemberID = group.members.filter(
+                    (memberID) => memberID !== user.uid
+                  )[0]
+                  const otherMember = users.find(
+                    (user) => user.uid === otherMemberID
+                  )
+                  if (otherMember) {
+                    newPrivateChatsUsers.push(otherMember)
+                  }
+                }
+                dispatch(setPrivateChatsUsers(newPrivateChatsUsers))
               })
           }
         })
