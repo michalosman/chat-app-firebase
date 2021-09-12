@@ -4,8 +4,6 @@ import { useSelector } from 'react-redux'
 import User from '../../../types/User'
 import PrivateMenu from './PrivateMenu'
 import GroupMenu from './GroupMenu'
-import { db } from '../../../firebase'
-import { convertDocToUser } from '../../../utils/converters'
 import { AppState } from '../../../state/store/store'
 
 import {
