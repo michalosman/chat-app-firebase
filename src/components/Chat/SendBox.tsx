@@ -43,7 +43,6 @@ const SendBox = () => {
         },
       })
 
-    //set recent message
     db.collection('groups')
       .doc(groupID)
       .set(
