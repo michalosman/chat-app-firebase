@@ -1,4 +1,12 @@
-import { Avatar, Input, List, ListItem, makeStyles } from '@material-ui/core'
+import {
+  Avatar,
+  Box,
+  Button,
+  Input,
+  List,
+  ListItem,
+  makeStyles,
+} from '@material-ui/core'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { db } from '../firebase'
@@ -37,9 +45,10 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props {
   onItemClick: (id: string) => void
+  onCancel: () => void
 }
 
-const UserSearchbox = ({ onItemClick }: Props) => {
+const UserSearchbox = ({ onItemClick, onCancel }: Props) => {
   const classes = useStyles()
   const currentUser = useSelector((state: AppState) => state.user)
   const [input, setInput] = useState('')
@@ -93,7 +102,7 @@ const UserSearchbox = ({ onItemClick }: Props) => {
   ))
 
   return (
-    <>
+    <Box p={2}>
       <Input
         className={classes.input}
         placeholder="Search person"
@@ -103,7 +112,15 @@ const UserSearchbox = ({ onItemClick }: Props) => {
         required
       />
       <List className={classes.list}>{usersList}</List>
-    </>
+      <Button
+        color="secondary"
+        variant="contained"
+        onClick={onCancel}
+        fullWidth
+      >
+        Cancel
+      </Button>
+    </Box>
   )
 }
 

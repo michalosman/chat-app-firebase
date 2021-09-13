@@ -125,17 +125,10 @@ const AddChatMenu = () => {
         </MenuItem>
       </Menu>
       <Dialog open={isPrivateDialogOpen} onClose={closePrivateDialog}>
-        <Box p={2}>
-          <UserSearchbox onItemClick={createPrivateChat} />
-          <Button
-            color="secondary"
-            variant="contained"
-            onClick={closePrivateDialog}
-            fullWidth
-          >
-            Cancel
-          </Button>
-        </Box>
+        <UserSearchbox
+          onItemClick={createPrivateChat}
+          onCancel={closePrivateDialog}
+        />
       </Dialog>
       <Dialog open={isGroupDialogOpen} onClose={closeGroupDialog}>
         <Box p={2}>
