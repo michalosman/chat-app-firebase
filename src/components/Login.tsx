@@ -2,7 +2,8 @@ import firebase from 'firebase/app'
 import logo from '../assets/logo192.png'
 import { auth, db, provider } from '../firebase'
 
-import { Box, Button, makeStyles, Typography } from '@material-ui/core'
+import { Box, Button, Link, makeStyles, Typography } from '@material-ui/core'
+import GitHubIcon from '@material-ui/icons/GitHub'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -27,6 +28,18 @@ const useStyles = makeStyles((theme) => ({
   image: {
     width: '100%',
     marginTop: '-14px',
+  },
+
+  footer: {
+    position: 'absolute',
+    bottom: '0',
+    left: '0',
+  },
+
+  link: {
+    '&:hover': {
+      color: theme.palette.primary.main,
+    },
   },
 }))
 
@@ -90,6 +103,26 @@ const Login = () => {
           >
             Sign in with Google
           </Button>
+        </Box>
+      </Box>
+      <Box
+        className={classes.footer}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        width="100%"
+        py={1}
+      >
+        <Typography variant="h6">Copyright © 2021 michalosman</Typography>
+        <Box ml={1}>
+          <Link
+            className={classes.link}
+            color="textPrimary"
+            href="https://github.com/michalosman"
+            target="_blank"
+          >
+            <GitHubIcon />
+          </Link>
         </Box>
       </Box>
     </Box>
