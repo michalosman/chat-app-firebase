@@ -18,9 +18,6 @@ import { Box } from '@material-ui/core'
 const App = () => {
   const [user, loading] = useAuthState(auth)
   const dispatch = useDispatch()
-  const privateChatsUsers = useSelector(
-    (state: AppState) => state.privateChatsUsers
-  )
   const groups = useSelector((state: AppState) => state.groups)
 
   useEffect(() => {
