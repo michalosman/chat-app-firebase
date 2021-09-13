@@ -36,11 +36,13 @@ const App = () => {
       unsubscribeGroups = db
         .collection('groups')
         .where('members', 'array-contains', user.uid)
-        .onSnapshot((snapshot) =>
+        .onSnapshot((snapshot) => {
+          // need to reset in order to force loading condition (len === 0)
+          dispatch(setPrivateChatsUsers([]))
           dispatch(
             setGroups(snapshot.docs.map((doc) => convertDocToGroup(doc)))
           )
-        )
+        })
     } else {
       dispatch(setUser(USER_INIT_STATE))
       dispatch(setGroups([]))
@@ -57,27 +59,23 @@ const App = () => {
     if (user) {
       const privateGroups = groups.filter((group) => group.type === 'private')
 
-      if (privateGroups.length !== privateChatsUsers.length) {
-        db.collection('users')
-          .get()
-          .then((snapshot) => {
-            const users = snapshot.docs.map((doc) => convertDocToUser(doc))
-            const newPrivateChatsUsers: User[] = []
+      db.collection('users')
+        .get()
+        .then((snapshot) => {
+          const users = snapshot.docs.map((doc) => convertDocToUser(doc))
+          const newPrivateChatsUsers: User[] = []
 
-            for (const group of privateGroups) {
-              const otherMemberID = group.members.filter(
-                (memberID) => memberID !== user.uid
-              )[0]
-              const otherMember = users.find(
-                (user) => user.uid === otherMemberID
-              )
-              if (otherMember) {
-                newPrivateChatsUsers.push(otherMember)
-              }
+          for (const group of privateGroups) {
+            const otherMemberID = group.members.filter(
+              (memberID) => memberID !== user.uid
+            )[0]
+            const otherMember = users.find((user) => user.uid === otherMemberID)
+            if (otherMember) {
+              newPrivateChatsUsers.push(otherMember)
             }
-            dispatch(setPrivateChatsUsers(newPrivateChatsUsers))
-          })
-      }
+          }
+          dispatch(setPrivateChatsUsers(newPrivateChatsUsers))
+        })
     } else {
       dispatch(setPrivateChatsUsers([]))
     }

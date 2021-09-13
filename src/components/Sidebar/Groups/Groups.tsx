@@ -29,7 +29,7 @@ const Groups = () => {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    // we only need to simulate private chats loadings
+    // simulate loading to ensure private users data is fetched
     setLoading(true)
     if (groups.find((group) => group.type === 'private')) {
       if (privateChatsUsers.length > 0) {
@@ -69,12 +69,7 @@ const Groups = () => {
       flex={1}
     >
       {loading ? (
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          flex={1}
-        >
+        <Box display="flex" justifyContent="center" flex={1} mt={3}>
           <CircularProgress size="50px" />
         </Box>
       ) : (
