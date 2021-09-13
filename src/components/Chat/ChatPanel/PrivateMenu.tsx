@@ -41,7 +41,7 @@ const PrivateMenu = () => {
         open={Boolean(anchorEl)}
         onClose={closeMenu}
       >
-        <MenuItem onClick={closeMenu}>
+        <MenuItem disabled onClick={closeMenu}>
           <ListItemIcon>
             <BlockIcon fontSize="small" />
           </ListItemIcon>

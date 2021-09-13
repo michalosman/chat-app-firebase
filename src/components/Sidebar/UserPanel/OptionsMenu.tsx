@@ -36,19 +36,19 @@ const OptionsMenu = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem disabled onClick={handleClose}>
           <ListItemIcon>
             <SettingsIcon />
           </ListItemIcon>
           <ListItemText primary="Preferences" />
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem disabled onClick={handleClose}>
           <ListItemIcon>
             <HelpIcon />
           </ListItemIcon>
           <ListItemText primary="Help" />
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem disabled onClick={handleClose}>
           <ListItemIcon>
             <ReportIcon />
           </ListItemIcon>
