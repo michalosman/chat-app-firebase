@@ -5,15 +5,15 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import Chat from './components/Chat'
 import Sidebar from './components/Sidebar'
 import Login from './components/Login'
+import User from './types/User'
 import { auth, db } from './firebase'
 import { setGroups, setPrivateChatsUsers, setUser } from './state/actions'
 import { convertDocToGroup, convertDocToUser } from './utils/converters'
 import { USER_INIT_STATE } from './state/reducers/user'
-
-import { Box } from '@material-ui/core'
-import CircularProgress from '@material-ui/core/CircularProgress'
 import { AppState } from './state/store/store'
-import User from './types/User'
+
+import CircularProgress from '@material-ui/core/CircularProgress'
+import { Box } from '@material-ui/core'
 
 const App = () => {
   const [user, loading] = useAuthState(auth)
@@ -44,7 +44,6 @@ const App = () => {
     } else {
       dispatch(setUser(USER_INIT_STATE))
       dispatch(setGroups([]))
-      dispatch(setPrivateChatsUsers([]))
     }
 
     return () => {
@@ -79,6 +78,8 @@ const App = () => {
             dispatch(setPrivateChatsUsers(newPrivateChatsUsers))
           })
       }
+    } else {
+      dispatch(setPrivateChatsUsers([]))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, groups])
