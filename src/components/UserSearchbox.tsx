@@ -46,24 +46,22 @@ const useStyles = makeStyles((theme) => ({
 interface Props {
   onItemClick: (id: string) => void
   onCancel: () => void
+  avoidUsersList?: User[]
 }
 
-const UserSearchbox = ({ onItemClick, onCancel }: Props) => {
+const UserSearchbox = ({ onItemClick, onCancel, avoidUsersList }: Props) => {
   const classes = useStyles()
   const currentUser = useSelector((state: AppState) => state.user)
   const [input, setInput] = useState('')
   const [users, setUsers] = useState<User[]>([])
-  const privateChatsUsers = useSelector(
-    (state: AppState) => state.privateChatsUsers
-  )
 
   useEffect(() => {
     const unsubscribe = db
       .collection('users')
       .orderBy('displayName')
-      .onSnapshot((snapshot) =>
+      .onSnapshot((snapshot) => {
         setUsers(snapshot.docs.map((doc) => convertDocToUser(doc)))
-      )
+      })
     return () => {
       unsubscribe()
     }
@@ -79,7 +77,7 @@ const UserSearchbox = ({ onItemClick, onCancel }: Props) => {
       (user) =>
         user.displayName.match(regex) &&
         user.uid !== currentUser.uid &&
-        !privateChatsUsers.find(
+        !avoidUsersList?.find(
           (alreadyCreatedPrivateChatUser) =>
             alreadyCreatedPrivateChatUser.uid === user.uid
         )

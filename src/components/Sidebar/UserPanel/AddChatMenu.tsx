@@ -128,6 +128,7 @@ const AddChatMenu = () => {
         <UserSearchbox
           onItemClick={createPrivateChat}
           onCancel={closePrivateDialog}
+          avoidUsersList={privateChatsUsers}
         />
       </Dialog>
       <Dialog open={isGroupDialogOpen} onClose={closeGroupDialog}>
