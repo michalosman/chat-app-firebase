@@ -19,6 +19,9 @@ const App = () => {
   const [user, loading] = useAuthState(auth)
   const dispatch = useDispatch()
   const groups = useSelector((state: AppState) => state.groups)
+  const privateChatsUsers = useSelector(
+    (state: AppState) => state.privateChatsUsers
+  )
 
   useEffect(() => {
     let unsubscribeUser = () => {}
@@ -33,13 +36,11 @@ const App = () => {
       unsubscribeGroups = db
         .collection('groups')
         .where('members', 'array-contains', user.uid)
-        .onSnapshot((snapshot) => {
-          // need to reset in order to force loading condition (len === 0)
-          dispatch(setPrivateChatsUsers([]))
+        .onSnapshot((snapshot) =>
           dispatch(
             setGroups(snapshot.docs.map((doc) => convertDocToGroup(doc)))
           )
-        })
+        )
     } else {
       dispatch(setUser(USER_INIT_STATE))
       dispatch(setGroups([]))
@@ -53,31 +54,37 @@ const App = () => {
   }, [user])
 
   useEffect(() => {
-    if (user) {
+    if (user && groups.length > 0) {
       const privateGroups = groups.filter((group) => group.type === 'private')
 
-      db.collection('users')
-        .get()
-        .then((snapshot) => {
-          const users = snapshot.docs.map((doc) => convertDocToUser(doc))
-          const newPrivateChatsUsers: User[] = []
+      if (privateGroups.length !== privateChatsUsers.length) {
+        dispatch(setPrivateChatsUsers([]))
 
-          for (const group of privateGroups) {
-            const otherMemberID = group.members.filter(
-              (memberID) => memberID !== user.uid
-            )[0]
-            const otherMember = users.find((user) => user.uid === otherMemberID)
-            if (otherMember) {
-              newPrivateChatsUsers.push(otherMember)
+        db.collection('users')
+          .get()
+          .then((snapshot) => {
+            const users = snapshot.docs.map((doc) => convertDocToUser(doc))
+            const newPrivateChatsUsers: User[] = []
+
+            for (const group of privateGroups) {
+              const otherMemberID = group.members.filter(
+                (memberID) => memberID !== user.uid
+              )[0]
+              const otherMember = users.find(
+                (user) => user.uid === otherMemberID
+              )
+              if (otherMember) {
+                newPrivateChatsUsers.push(otherMember)
+              }
             }
-          }
-          dispatch(setPrivateChatsUsers(newPrivateChatsUsers))
-        })
+            dispatch(setPrivateChatsUsers(newPrivateChatsUsers))
+          })
+      }
     } else {
       dispatch(setPrivateChatsUsers([]))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, groups])
+  }, [user, groups.length])
 
   return (
     <Box display="flex" height="100vh">

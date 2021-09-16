@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import User from '../../../types/User'
 import PrivateMenu from './PrivateMenu'
-import GroupMenu from './GroupMenu'
+import PublicMenu from './PublicMenu'
 import { AppState } from '../../../state/store/store'
 
 import {
@@ -82,7 +82,7 @@ const ChatPanel = () => {
               </Typography>
             </Box>
           </Box>
-          {group.type === 'private' ? <PrivateMenu /> : <GroupMenu />}
+          {group.type === 'private' ? <PrivateMenu /> : <PublicMenu />}
         </Box>
       )}
     </Box>

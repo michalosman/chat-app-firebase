@@ -17,6 +17,6 @@ const userReducer = (state = INIT_STATE, action: AppAction): User => {
   }
 }
 
-export {INIT_STATE as USER_INIT_STATE}
+export { INIT_STATE as USER_INIT_STATE }
 
 export default userReducer

@@ -7,31 +7,18 @@ import {
   ListItemIcon,
   ListItemText,
   Dialog,
-  Box,
-  Typography,
-  Button,
-  Input,
-  makeStyles,
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import EditIcon from '@material-ui/icons/Edit'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import DeleteIcon from '@material-ui/icons/Delete'
+import UserSearchbox from '../../UserSearchbox'
 
-const useStyles = makeStyles(() => ({
-  dialogTitle: {
-    fontSize: '21px',
-    fontWeight: 'bold',
-  },
-}))
-
-const GroupMenu = () => {
-  const classes = useStyles()
+const PublicMenu = () => {
   const isOwner = true
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [isAddPersonDialogOpen, setIsAddPersonDialogOpen] = useState(false)
-  const [addPersonInput, setAddPersonInput] = useState('')
 
   const openMenu = (e: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(e.currentTarget)
@@ -47,11 +34,6 @@ const GroupMenu = () => {
 
   const closeAddPersonDialog = () => {
     setIsAddPersonDialogOpen(false)
-    setAddPersonInput('')
-  }
-
-  const handleAddPersonInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAddPersonInput(e.currentTarget.value)
   }
 
   const addPerson = () => {}
@@ -95,36 +77,14 @@ const GroupMenu = () => {
           </MenuItem>
         )}
         <Dialog open={isAddPersonDialogOpen} onClose={closeAddPersonDialog}>
-          <Box p={2}>
-            <Typography
-              className={classes.dialogTitle}
-              align="center"
-              gutterBottom
-            >
-              Add Person
-            </Typography>
-            <Input
-              placeholder="Search person"
-              onChange={handleAddPersonInput}
-              value={addPersonInput}
-            />
-            <Box display="flex" justifyContent="space-between" mt={2}>
-              <Button
-                color="secondary"
-                variant="contained"
-                onClick={closeAddPersonDialog}
-              >
-                Cancel
-              </Button>
-              <Button color="primary" variant="contained" onClick={addPerson}>
-                Create
-              </Button>
-            </Box>
-          </Box>
+          <UserSearchbox
+            onItemClick={addPerson}
+            onCancel={closeAddPersonDialog}
+          />
         </Dialog>
       </Menu>
     </>
   )
 }
 
-export default GroupMenu
+export default PublicMenu
