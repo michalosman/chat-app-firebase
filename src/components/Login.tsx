@@ -7,11 +7,11 @@ import GitHubIcon from '@material-ui/icons/GitHub'
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    backgroundColor: theme.palette.action.selected,
+    backgroundColor: theme.palette.background.default,
   },
 
   box: {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: theme.palette.action.hover,
   },
 
   title: {
@@ -20,14 +20,14 @@ const useStyles = makeStyles((theme) => ({
   },
 
   imageShadow: {
-    width: '100px',
-    height: '71px',
-    borderRadius: '10px',
+    width: '120px',
+    height: '86px',
+    borderRadius: '13px',
   },
 
   image: {
     width: '100%',
-    marginTop: '-14px',
+    marginTop: '-16px',
   },
 
   footer: {
@@ -79,8 +79,7 @@ const Login = () => {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        width="400px"
-        height="400px"
+        p={5}
         borderRadius="10px"
         boxShadow={5}
       >
@@ -100,6 +99,7 @@ const Login = () => {
             variant="contained"
             color="primary"
             onClick={signInWithGoogle}
+            fullWidth
           >
             Sign in with Google
           </Button>
