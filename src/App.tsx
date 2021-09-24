@@ -7,31 +7,31 @@ import Sidebar from './components/Sidebar'
 import Login from './components/Login'
 import User from './types/User'
 import { auth, db } from './firebase'
-import { setGroups, setPrivateChatsUsers, setUser } from './state/actions'
+import { setGroups, setPrivateGroupsUsers, setUser } from './state/actions'
 import { convertDocToGroup, convertDocToUser } from './utils/converters'
 import { USER_INIT_STATE } from './state/reducers/user'
 import { AppState } from './state/store/store'
 
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { Box } from '@material-ui/core'
+import { getOtherPrivateGroupMember } from './utils/utils'
 
 const App = () => {
   const [user, loading] = useAuthState(auth)
   const dispatch = useDispatch()
   const groups = useSelector((state: AppState) => state.groups)
-  const privateChatsUsers = useSelector(
-    (state: AppState) => state.privateChatsUsers
+  const privateGroupsUsers = useSelector(
+    (state: AppState) => state.privateGroupsUsers
   )
 
   useEffect(() => {
-    let unsubscribeUser = () => {}
     let unsubscribeGroups = () => {}
 
     if (user) {
-      unsubscribeUser = db
-        .collection('users')
+      db.collection('users')
         .doc(user.uid)
-        .onSnapshot((snapshot) => dispatch(setUser(convertDocToUser(snapshot))))
+        .get()
+        .then((snapshot) => dispatch(setUser(convertDocToUser(snapshot))))
 
       unsubscribeGroups = db
         .collection('groups')
@@ -47,7 +47,6 @@ const App = () => {
     }
 
     return () => {
-      unsubscribeUser()
       unsubscribeGroups()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -57,31 +56,31 @@ const App = () => {
     if (user && groups.length > 0) {
       const privateGroups = groups.filter((group) => group.type === 'private')
 
-      if (privateGroups.length !== privateChatsUsers.length) {
-        dispatch(setPrivateChatsUsers([]))
+      if (privateGroups.length !== privateGroupsUsers.length) {
+        // TODO: Some kind of loading indicator instead of emptying, same for groups
+        dispatch(setPrivateGroupsUsers([]))
 
         db.collection('users')
           .get()
           .then((snapshot) => {
             const users = snapshot.docs.map((doc) => convertDocToUser(doc))
-            const newPrivateChatsUsers: User[] = []
+            const newPrivateGroupsUsers: User[] = []
 
             for (const group of privateGroups) {
-              const otherMemberID = group.members.filter(
-                (memberID) => memberID !== user.uid
-              )[0]
-              const otherMember = users.find(
-                (user) => user.uid === otherMemberID
+              const otherMember = getOtherPrivateGroupMember(
+                group,
+                user.uid,
+                users
               )
               if (otherMember) {
-                newPrivateChatsUsers.push(otherMember)
+                newPrivateGroupsUsers.push(otherMember)
               }
             }
-            dispatch(setPrivateChatsUsers(newPrivateChatsUsers))
+            dispatch(setPrivateGroupsUsers(newPrivateGroupsUsers))
           })
       }
     } else {
-      dispatch(setPrivateChatsUsers([]))
+      dispatch(setPrivateGroupsUsers([]))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, groups.length])

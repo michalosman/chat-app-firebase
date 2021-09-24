@@ -13,6 +13,7 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core'
+import { getOtherPrivateGroupMember } from '../../../utils/utils'
 
 const useStyles = makeStyles(() => ({
   bold: {
@@ -25,8 +26,8 @@ const ChatPanel = () => {
   const { groupID } = useParams<{ groupID: string }>()
   const currentUser = useSelector((state: AppState) => state.user)
   const groups = useSelector((state: AppState) => state.groups)
-  const privateChatsUsers = useSelector(
-    (state: AppState) => state.privateChatsUsers
+  const privateGroupsUsers = useSelector(
+    (state: AppState) => state.privateGroupsUsers
   )
   const group = groups.filter((group) => group.id === groupID)[0]
   const [otherMember, setOtherMember] = useState<User>()
@@ -35,12 +36,11 @@ const ChatPanel = () => {
   useEffect(() => {
     if (group) {
       if (group.type === 'private') {
-        if (privateChatsUsers.length > 0) {
-          const otherMemberID = group.members.filter(
-            (memberID) => memberID !== currentUser.uid
-          )[0]
-          const otherMember = privateChatsUsers.find(
-            (user) => user.uid === otherMemberID
+        if (privateGroupsUsers.length > 0) {
+          const otherMember = getOtherPrivateGroupMember(
+            group,
+            currentUser.uid,
+            privateGroupsUsers
           )
           setOtherMember(otherMember)
           setLoading(false)
@@ -50,7 +50,7 @@ const ChatPanel = () => {
         setLoading(false)
       }
     }
-  }, [group, privateChatsUsers, currentUser])
+  }, [group, privateGroupsUsers, currentUser])
 
   return (
     <Box

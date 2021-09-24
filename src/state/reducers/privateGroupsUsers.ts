@@ -3,7 +3,7 @@ import { AppAction, SET_PRIVATE_CHATS_USERS } from '../../types/actions'
 
 const INIT_STATE: User[] = []
 
-const privateChatsUsersReducer = (
+const privateGroupsUsersReducer = (
   state = INIT_STATE,
   action: AppAction
 ): User[] => {
@@ -15,4 +15,4 @@ const privateChatsUsersReducer = (
   }
 }
 
-export default privateChatsUsersReducer
+export default privateGroupsUsersReducer

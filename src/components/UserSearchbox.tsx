@@ -56,15 +56,12 @@ const UserSearchbox = ({ onItemClick, onCancel, avoidUsersList }: Props) => {
   const [users, setUsers] = useState<User[]>([])
 
   useEffect(() => {
-    const unsubscribe = db
-      .collection('users')
+    db.collection('users')
       .orderBy('displayName')
-      .onSnapshot((snapshot) => {
+      .get()
+      .then((snapshot) => {
         setUsers(snapshot.docs.map((doc) => convertDocToUser(doc)))
       })
-    return () => {
-      unsubscribe()
-    }
   }, [])
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,8 +75,8 @@ const UserSearchbox = ({ onItemClick, onCancel, avoidUsersList }: Props) => {
         user.displayName.match(regex) &&
         user.uid !== currentUser.uid &&
         !avoidUsersList?.find(
-          (alreadyCreatedPrivateChatUser) =>
-            alreadyCreatedPrivateChatUser.uid === user.uid
+          (alreadyCreatedPrivateGroupUser) =>
+            alreadyCreatedPrivateGroupUser.uid === user.uid
         )
     )
   }

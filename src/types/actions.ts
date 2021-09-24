@@ -16,7 +16,7 @@ export interface SetGroupsAction {
   groups: Group[]
 }
 
-export interface SetPrivateChatsUsersAction {
+export interface SetPrivateGroupsUsersAction {
   type: typeof SET_PRIVATE_CHATS_USERS
   users: User[]
 }
@@ -27,11 +27,11 @@ export interface ToggleDarkThemeAction {
 
 export type UserAction = SetUserAction
 export type GroupsAction = SetGroupsAction
-export type PrivateChatsUsersAction = SetPrivateChatsUsersAction
+export type PrivateGroupsUsersAction = SetPrivateGroupsUsersAction
 export type DarkThemeEnabledAction = ToggleDarkThemeAction
 
 export type AppAction =
   | UserAction
   | GroupsAction
-  | PrivateChatsUsersAction
+  | PrivateGroupsUsersAction
   | DarkThemeEnabledAction

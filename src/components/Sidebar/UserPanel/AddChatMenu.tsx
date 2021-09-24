@@ -36,8 +36,8 @@ const AddChatMenu = () => {
   const [isPrivateDialogOpen, setIsPrivateDialogOpen] = useState(false)
   const [isGroupDialogOpen, setIsGroupDialogOpen] = useState(false)
   const [groupDialogInput, setGroupDialogInput] = useState('')
-  const privateChatsUsers = useSelector(
-    (state: AppState) => state.privateChatsUsers
+  const privateGroupsUsers = useSelector(
+    (state: AppState) => state.privateGroupsUsers
   )
 
   const openMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -71,8 +71,8 @@ const AddChatMenu = () => {
     setGroupDialogInput(e.currentTarget.value)
   }
 
-  const createPrivateChat = (id: string) => {
-    if (privateChatsUsers.find((user) => user.uid === id)) return
+  const createPrivateGroup = (id: string) => {
+    if (privateGroupsUsers.find((user) => user.uid === id)) return
 
     db.collection('groups').add({
       name: '',
@@ -126,9 +126,9 @@ const AddChatMenu = () => {
       </Menu>
       <Dialog open={isPrivateDialogOpen} onClose={closePrivateDialog}>
         <UserSearchbox
-          onItemClick={createPrivateChat}
+          onItemClick={createPrivateGroup}
           onCancel={closePrivateDialog}
-          avoidUsersList={privateChatsUsers}
+          avoidUsersList={privateGroupsUsers}
         />
       </Dialog>
       <Dialog open={isGroupDialogOpen} onClose={closeGroupDialog}>

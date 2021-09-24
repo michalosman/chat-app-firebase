@@ -23,8 +23,8 @@ const Groups = () => {
   const { groupID } = useParams<{ groupID: string }>()
   const currentUser = useSelector((state: AppState) => state.user)
   const groups = useSelector((state: AppState) => state.groups)
-  const privateChatsUsers = useSelector(
-    (state: AppState) => state.privateChatsUsers
+  const privateGroupsUsers = useSelector(
+    (state: AppState) => state.privateGroupsUsers
   )
   const [loading, setLoading] = useState(false)
 
@@ -32,13 +32,13 @@ const Groups = () => {
     // simulate loading to ensure private users data is fetched
     setLoading(true)
     if (groups.find((group) => group.type === 'private')) {
-      if (privateChatsUsers.length > 0) {
+      if (privateGroupsUsers.length > 0) {
         setLoading(false)
       }
     } else {
       setLoading(false)
     }
-  }, [groups, privateChatsUsers])
+  }, [groups, privateGroupsUsers])
 
   const groupBoxes = groups.map((group) => (
     <GroupBox
@@ -47,7 +47,7 @@ const Groups = () => {
       isActive={groupID === group.id}
       otherMember={
         group.type === 'private'
-          ? privateChatsUsers.find(
+          ? privateGroupsUsers.find(
               (user) =>
                 user.uid ===
                 group.members.filter(
