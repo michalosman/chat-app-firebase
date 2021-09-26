@@ -12,4 +12,6 @@ const groupsReducer = (state = INIT_STATE, action: AppAction): Group[] => {
   }
 }
 
+export { INIT_STATE as GROUPS_INIT_STATE }
+
 export default groupsReducer

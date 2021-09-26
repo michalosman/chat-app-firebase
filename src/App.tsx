@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { createContext, useEffect, useRef, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import Chat from './components/Chat'
@@ -9,93 +9,128 @@ import User from './types/User'
 import { auth, db } from './firebase'
 import { setGroups, setPrivateGroupsUsers, setUser } from './state/actions'
 import { convertDocToGroup, convertDocToUser } from './utils/converters'
+import { getOtherPrivateGroupMember } from './utils/utils'
 import { USER_INIT_STATE } from './state/reducers/user'
-import { AppState } from './state/store/store'
+import { GROUPS_INIT_STATE } from './state/reducers/groups'
+import { PRIVATE_GROUPS_USERS_INIT_STATE } from './state/reducers/privateGroupsUsers'
 
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { Box } from '@material-ui/core'
-import { getOtherPrivateGroupMember } from './utils/utils'
+
+export const LoadingContext = createContext(true)
 
 const App = () => {
-  const [user, loadingUser] = useAuthState(auth)
+  const [user, loadingUserAuth] = useAuthState(auth)
+  const [loadingUserData, setLoadingUserData] = useState(true)
+  const [loadingGroupsData, setLoadingGroupsData] = useState(true)
   const dispatch = useDispatch()
-  const groups = useSelector((state: AppState) => state.groups)
-  const privateGroupsUsers = useSelector(
-    (state: AppState) => state.privateGroupsUsers
-  )
+  const previousGroupsLength = useRef(0)
+  const previousPrivateGroupsLength = useRef(0)
 
   useEffect(() => {
-    let unsubscribeGroups = () => {}
+    let unsubscribe = () => {}
 
     if (user) {
       db.collection('users')
         .doc(user.uid)
         .get()
-        .then((snapshot) => dispatch(setUser(convertDocToUser(snapshot))))
+        .then((snapshot) => {
+          dispatch(setUser(convertDocToUser(snapshot)))
+          setLoadingUserData(false)
+        })
 
-      unsubscribeGroups = db
+      unsubscribe = db
         .collection('groups')
         .where('members', 'array-contains', user.uid)
-        .onSnapshot((snapshot) =>
-          dispatch(
-            setGroups(snapshot.docs.map((doc) => convertDocToGroup(doc)))
+        .onSnapshot((snapshot) => {
+          setLoadingGroupsData(true)
+          const groups = snapshot.docs.map((doc) => convertDocToGroup(doc))
+
+          if (groups.length === 0) {
+            dispatch(setGroups(GROUPS_INIT_STATE))
+            dispatch(setPrivateGroupsUsers(PRIVATE_GROUPS_USERS_INIT_STATE))
+            setLoadingGroupsData(false)
+            return
+          } else {
+            dispatch(setGroups(groups))
+          }
+
+          // If it's just a group info update (e.g. new recentMessage)
+          if (groups.length === previousGroupsLength.current) {
+            setLoadingGroupsData(false)
+            return
+          } else {
+            previousGroupsLength.current = groups.length
+          }
+
+          const privateGroups = groups.filter(
+            (group) => group.type === 'private'
           )
-        )
+
+          if (privateGroups.length === 0) {
+            dispatch(setPrivateGroupsUsers(PRIVATE_GROUPS_USERS_INIT_STATE))
+            // Timeout keeps loadings consistent when no private groups
+            setTimeout(() => setLoadingGroupsData(false), 300)
+            return
+          }
+
+          if (privateGroups.length === previousPrivateGroupsLength.current) {
+            setTimeout(() => setLoadingGroupsData(false), 300)
+            return
+          } else {
+            previousPrivateGroupsLength.current = privateGroups.length
+          }
+
+          // Case private chat has been added or removed
+          db.collection('users')
+            .get()
+            .then((snapshot) => {
+              const users = snapshot.docs.map((doc) => convertDocToUser(doc))
+              const privateGroupsUsers: User[] = []
+
+              for (const group of privateGroups) {
+                const otherMember = getOtherPrivateGroupMember(
+                  group,
+                  user.uid,
+                  users
+                )
+                if (otherMember) {
+                  privateGroupsUsers.push(otherMember)
+                }
+              }
+              dispatch(setPrivateGroupsUsers(privateGroupsUsers))
+              setLoadingGroupsData(false)
+            })
+        })
     } else {
+      // Reset all in case user relogs during one session
       dispatch(setUser(USER_INIT_STATE))
-      dispatch(setGroups([]))
+      dispatch(setGroups(GROUPS_INIT_STATE))
+      dispatch(setPrivateGroupsUsers(PRIVATE_GROUPS_USERS_INIT_STATE))
+      setLoadingUserData(true)
+      setLoadingGroupsData(true)
+      previousGroupsLength.current = 0
     }
 
     return () => {
-      unsubscribeGroups()
+      unsubscribe()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
 
-  useEffect(() => {
-    if (user && groups.length > 0) {
-      const privateGroups = groups.filter((group) => group.type === 'private')
-
-      if (privateGroups.length !== privateGroupsUsers.length) {
-        // TODO: Some kind of loading indicator instead of emptying, same for groups
-        dispatch(setPrivateGroupsUsers([]))
-
-        db.collection('users')
-          .get()
-          .then((snapshot) => {
-            const users = snapshot.docs.map((doc) => convertDocToUser(doc))
-            const newPrivateGroupsUsers: User[] = []
-
-            for (const group of privateGroups) {
-              const otherMember = getOtherPrivateGroupMember(
-                group,
-                user.uid,
-                users
-              )
-              if (otherMember) {
-                newPrivateGroupsUsers.push(otherMember)
-              }
-            }
-            dispatch(setPrivateGroupsUsers(newPrivateGroupsUsers))
-          })
-      }
-    } else {
-      dispatch(setPrivateGroupsUsers([]))
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, groups.length])
-
   return (
     <Box display="flex" height="100vh">
-      {loadingUser ? (
+      {loadingUserAuth || (user && loadingUserData) ? (
         <Box m="auto">
           <CircularProgress size="150px" />
         </Box>
-      ) : user ? (
+      ) : user && !loadingUserData ? (
         <Router>
           <Route exact path={['/', '/:groupID']}>
-            <Sidebar />
-            <Chat />
+            <LoadingContext.Provider value={loadingGroupsData}>
+              <Sidebar />
+              <Chat />
+            </LoadingContext.Provider>
           </Route>
         </Router>
       ) : (

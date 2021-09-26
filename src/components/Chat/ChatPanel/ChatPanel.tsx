@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import User from '../../../types/User'
@@ -6,6 +6,8 @@ import Group from '../../../types/Group'
 import PrivateMenu from './PrivateMenu'
 import PublicMenu from './PublicMenu'
 import { AppState } from '../../../state/store/store'
+import { getOtherPrivateGroupMember } from '../../../utils/utils'
+import { LoadingContext } from '../../../App'
 
 import {
   Avatar,
@@ -14,7 +16,6 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core'
-import { getOtherPrivateGroupMember } from '../../../utils/utils'
 
 const useStyles = makeStyles(() => ({
   bold: {
@@ -29,28 +30,24 @@ const ChatPanel = () => {
   const privateGroupsUsers = useSelector(
     (state: AppState) => state.privateGroupsUsers
   )
+  const loadingGroupsData = useContext(LoadingContext)
   const { groupID } = useParams<{ groupID: string }>()
   const [group, setGroup] = useState<Group>()
   const [otherMember, setOtherMember] = useState<User>()
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    setGroup(groups.filter((group) => group.id === groupID)[0])
+    setGroup(groups.find((group) => group.id === groupID))
 
     if (group) {
       if (group.type === 'private') {
-        if (privateGroupsUsers.length > 0) {
-          const otherMember = getOtherPrivateGroupMember(
-            group,
-            currentUser.uid,
-            privateGroupsUsers
-          )
-          setOtherMember(otherMember)
-          setLoading(false)
-        }
+        const otherMember = getOtherPrivateGroupMember(
+          group,
+          currentUser.uid,
+          privateGroupsUsers
+        )
+        setOtherMember(otherMember)
       } else {
         setOtherMember(undefined)
-        setLoading(false)
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -66,7 +63,7 @@ const ChatPanel = () => {
       borderLeft={0}
       borderColor={'divider'}
     >
-      {loading ? (
+      {loadingGroupsData ? (
         <CircularProgress size="43px" />
       ) : group ? (
         <Box display="flex" justifyContent="space-between" alignItems="center">

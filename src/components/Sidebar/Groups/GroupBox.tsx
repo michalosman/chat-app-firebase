@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom'
 import Group from '../../../types/Group'
-import User from '../../../types/User'
 
 import { Avatar, Box, Button, Typography, makeStyles } from '@material-ui/core'
+import { getOtherPrivateGroupMember } from '../../../utils/utils'
+import { useSelector } from 'react-redux'
+import { AppState } from '../../../state/store/store'
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -26,11 +28,19 @@ const useStyles = makeStyles((theme) => ({
 interface Props {
   group: Group
   isActive: boolean
-  otherMember: User | undefined
 }
 
-const GroupBox = ({ group, isActive, otherMember }: Props) => {
+const GroupBox = ({ group, isActive }: Props) => {
   const classes = useStyles()
+  const currentUser = useSelector((state: AppState) => state.user)
+  const privateGroupsUsers = useSelector(
+    (state: AppState) => state.privateGroupsUsers
+  )
+  const otherMember = getOtherPrivateGroupMember(
+    group,
+    currentUser.uid,
+    privateGroupsUsers
+  )
 
   const formatMessage = (message: string) => {
     return message.length < 20 ? message : message.substr(0, 20) + '...'

@@ -15,4 +15,6 @@ const privateGroupsUsersReducer = (
   }
 }
 
+export { INIT_STATE as PRIVATE_GROUPS_USERS_INIT_STATE }
+
 export default privateGroupsUsersReducer
