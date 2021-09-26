@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import User from '../../../types/User'
+import Group from '../../../types/Group'
 import PrivateMenu from './PrivateMenu'
 import PublicMenu from './PublicMenu'
 import { AppState } from '../../../state/store/store'
@@ -23,17 +24,19 @@ const useStyles = makeStyles(() => ({
 
 const ChatPanel = () => {
   const classes = useStyles()
-  const { groupID } = useParams<{ groupID: string }>()
   const currentUser = useSelector((state: AppState) => state.user)
   const groups = useSelector((state: AppState) => state.groups)
   const privateGroupsUsers = useSelector(
     (state: AppState) => state.privateGroupsUsers
   )
-  const group = groups.filter((group) => group.id === groupID)[0]
+  const { groupID } = useParams<{ groupID: string }>()
+  const [group, setGroup] = useState<Group>()
   const [otherMember, setOtherMember] = useState<User>()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    setGroup(groups.filter((group) => group.id === groupID)[0])
+
     if (group) {
       if (group.type === 'private') {
         if (privateGroupsUsers.length > 0) {
@@ -50,7 +53,8 @@ const ChatPanel = () => {
         setLoading(false)
       }
     }
-  }, [group, privateGroupsUsers, currentUser])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [groups, privateGroupsUsers, groupID, group])
 
   return (
     <Box
@@ -64,7 +68,7 @@ const ChatPanel = () => {
     >
       {loading ? (
         <CircularProgress size="43px" />
-      ) : (
+      ) : group ? (
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box display="flex" alignItems="center">
             <Avatar
@@ -84,6 +88,8 @@ const ChatPanel = () => {
           </Box>
           {group.type === 'private' ? <PrivateMenu /> : <PublicMenu />}
         </Box>
+      ) : (
+        ''
       )}
     </Box>
   )

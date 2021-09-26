@@ -17,7 +17,7 @@ import { Box } from '@material-ui/core'
 import { getOtherPrivateGroupMember } from './utils/utils'
 
 const App = () => {
-  const [user, loading] = useAuthState(auth)
+  const [user, loadingUser] = useAuthState(auth)
   const dispatch = useDispatch()
   const groups = useSelector((state: AppState) => state.groups)
   const privateGroupsUsers = useSelector(
@@ -87,7 +87,7 @@ const App = () => {
 
   return (
     <Box display="flex" height="100vh">
-      {loading ? (
+      {loadingUser ? (
         <Box m="auto">
           <CircularProgress size="150px" />
         </Box>

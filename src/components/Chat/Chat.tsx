@@ -11,7 +11,7 @@ const Chat = () => {
   const { groupID } = useParams<{ groupID: string }>()
   const groups = useSelector((state: AppState) => state.groups)
 
-  return groups.length > 0 && groups.find((group) => group.id === groupID) ? (
+  return groups.find((group) => group.id === groupID) ? (
     <Box display="flex" flexDirection="column" flex={1}>
       <ChatPanel />
       <Messages />
