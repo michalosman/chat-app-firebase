@@ -1,5 +1,10 @@
 import { useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { db } from '../../../firebase'
 
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
+import BlockIcon from '@material-ui/icons/Block'
+import DeleteIcon from '@material-ui/icons/Delete'
 import {
   IconButton,
   Menu,
@@ -7,15 +12,10 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@material-ui/core'
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
-import BlockIcon from '@material-ui/icons/Block'
-import DeleteIcon from '@material-ui/icons/Delete'
-import { useParams } from 'react-router-dom'
-import { db } from '../../../firebase'
 
 const PrivateMenu = () => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const { groupID } = useParams<{ groupID: string }>()
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
   const openMenu = (e: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(e.currentTarget)

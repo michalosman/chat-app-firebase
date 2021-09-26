@@ -4,6 +4,9 @@ import UserSearchbox from '../../UserSearchbox'
 import { db } from '../../../firebase'
 import { AppState } from '../../../state/store/store'
 
+import AddIcon from '@material-ui/icons/Add'
+import PersonIcon from '@material-ui/icons/Person'
+import PeopleIcon from '@material-ui/icons/People'
 import {
   Dialog,
   IconButton,
@@ -16,9 +19,6 @@ import {
   Button,
   makeStyles,
 } from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add'
-import PersonIcon from '@material-ui/icons/Person'
-import PeopleIcon from '@material-ui/icons/People'
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -31,14 +31,14 @@ const useStyles = makeStyles((theme) => ({
 
 const AddChatMenu = () => {
   const classes = useStyles()
-  const user = useSelector((state: AppState) => state.user)
+  const currentUser = useSelector((state: AppState) => state.user)
+  const privateGroupsUsers = useSelector(
+    (state: AppState) => state.privateGroupsUsers
+  )
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [isPrivateDialogOpen, setIsPrivateDialogOpen] = useState(false)
   const [isGroupDialogOpen, setIsGroupDialogOpen] = useState(false)
   const [groupDialogInput, setGroupDialogInput] = useState('')
-  const privateGroupsUsers = useSelector(
-    (state: AppState) => state.privateGroupsUsers
-  )
 
   const openMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget)
@@ -77,10 +77,10 @@ const AddChatMenu = () => {
     db.collection('groups').add({
       name: '',
       type: 'private',
-      members: [id, user.uid],
+      members: [id, currentUser.uid],
       createdBy: {
-        uid: user.uid,
-        displayName: user.displayName,
+        uid: currentUser.uid,
+        displayName: currentUser.displayName,
       },
     })
     closePrivateDialog()
@@ -91,10 +91,10 @@ const AddChatMenu = () => {
     db.collection('groups').add({
       name: groupDialogInput,
       type: 'public',
-      members: [user.uid],
+      members: [currentUser.uid],
       createdBy: {
-        uid: user.uid,
-        displayName: user.displayName,
+        uid: currentUser.uid,
+        displayName: currentUser.displayName,
       },
     })
     closeGroupDialog()

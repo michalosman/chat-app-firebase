@@ -1,5 +1,11 @@
 import { useState } from 'react'
+import UserSearchbox from '../../UserSearchbox'
 
+import AddIcon from '@material-ui/icons/Add'
+import EditIcon from '@material-ui/icons/Edit'
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import DeleteIcon from '@material-ui/icons/Delete'
 import {
   IconButton,
   Menu,
@@ -8,12 +14,6 @@ import {
   ListItemText,
   Dialog,
 } from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add'
-import EditIcon from '@material-ui/icons/Edit'
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
-import ExitToAppIcon from '@material-ui/icons/ExitToApp'
-import DeleteIcon from '@material-ui/icons/Delete'
-import UserSearchbox from '../../UserSearchbox'
 
 const PublicMenu = () => {
   const isOwner = true

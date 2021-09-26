@@ -4,16 +4,15 @@ import OptionsMenu from './OptionsMenu'
 import { toggleDarkTheme } from '../../../state/actions'
 import { AppState } from '../../../state/store/store'
 
+import Brightness2Icon from '@material-ui/icons/Brightness2'
+import WbSunnyIcon from '@material-ui/icons/WbSunny'
 import {
   Avatar,
   Box,
-  CircularProgress,
   IconButton,
   makeStyles,
   Typography,
 } from '@material-ui/core'
-import Brightness2Icon from '@material-ui/icons/Brightness2'
-import WbSunnyIcon from '@material-ui/icons/WbSunny'
 
 const useStyles = makeStyles((theme) => ({
   userInfo: {
@@ -37,20 +36,16 @@ const useStyles = makeStyles((theme) => ({
 
 const UserPanel = () => {
   const classes = useStyles()
-  const dispatch = useDispatch()
   const currentUser = useSelector((state: AppState) => state.user)
   const darkThemeEnabled = useSelector(
     (state: AppState) => state.darkThemeEnabled
   )
+  const dispatch = useDispatch()
 
   return (
     <Box display="flex" justifyContent="space-between" m={2} mb={1}>
       <Box className={classes.userInfo} display="flex" alignItems="center">
-        {currentUser.photoURL ? (
-          <Avatar src={`${currentUser.photoURL}`} />
-        ) : (
-          <CircularProgress size="40px" />
-        )}
+        <Avatar src={`${currentUser.photoURL}`} />
         <Typography className={classes.title} variant="h5">
           Chats
         </Typography>

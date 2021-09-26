@@ -2,8 +2,8 @@ import firebase from 'firebase/app'
 import logo from '../assets/logo192.png'
 import { auth, db, provider } from '../firebase'
 
-import { Box, Button, Link, makeStyles, Typography } from '@material-ui/core'
 import GitHubIcon from '@material-ui/icons/GitHub'
+import { Box, Button, Link, makeStyles, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
   container: {

@@ -5,9 +5,9 @@ import firebase from 'firebase/app'
 import { db } from '../../firebase'
 import { AppState } from '../../state/store/store'
 
-import { Box, IconButton, Input, makeStyles } from '@material-ui/core'
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions'
 import SendIcon from '@material-ui/icons/Send'
+import { Box, IconButton, Input, makeStyles } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -23,9 +23,9 @@ const useStyles = makeStyles((theme) => ({
 
 const SendBox = () => {
   const classes = useStyles()
-  const [input, setInput] = useState('')
-  const { groupID } = useParams<{ groupID: string }>()
   const currentUser = useSelector((state: AppState) => state.user)
+  const { groupID } = useParams<{ groupID: string }>()
+  const [input, setInput] = useState('')
 
   const sendMessage = (e: React.FormEvent) => {
     e.preventDefault()

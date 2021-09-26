@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
 import { auth } from '../../../firebase'
 
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import SettingsIcon from '@material-ui/icons/Settings'
+import HelpIcon from '@material-ui/icons/Help'
+import ReportIcon from '@material-ui/icons/Report'
 import {
   IconButton,
   ListItemIcon,
@@ -8,11 +13,6 @@ import {
   Menu,
   MenuItem,
 } from '@material-ui/core'
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
-import ExitToAppIcon from '@material-ui/icons/ExitToApp'
-import SettingsIcon from '@material-ui/icons/Settings'
-import HelpIcon from '@material-ui/icons/Help'
-import ReportIcon from '@material-ui/icons/Report'
 
 const OptionsMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
