@@ -1,5 +1,9 @@
 import { useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import UserSearchbox from '../../UserSearchbox'
+import { AppState } from '../../../state/store/store'
+import { db } from '../../../firebase'
 
 import AddIcon from '@material-ui/icons/Add'
 import EditIcon from '@material-ui/icons/Edit'
@@ -17,6 +21,8 @@ import {
 
 const PublicMenu = () => {
   const isOwner = true
+  const groups = useSelector((state: AppState) => state.groups)
+  const { groupID } = useParams<{ groupID: string }>()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [isAddPersonDialogOpen, setIsAddPersonDialogOpen] = useState(false)
 
@@ -36,7 +42,21 @@ const PublicMenu = () => {
     setIsAddPersonDialogOpen(false)
   }
 
-  const addPerson = () => {}
+  const addPerson = (id: string) => {
+    const members = groups.find((group) => group.id === groupID)?.members
+    if (members?.find((memberID) => memberID === id)) return
+
+    if (members) {
+      db.collection('groups')
+        .doc(groupID)
+        .set(
+          {
+            members: [...members, id],
+          },
+          { merge: true }
+        )
+    }
+  }
 
   return (
     <>
@@ -80,6 +100,7 @@ const PublicMenu = () => {
           <UserSearchbox
             onItemClick={addPerson}
             onCancel={closeAddPersonDialog}
+            avoidIdList={groups.find((group) => group.id === groupID)?.members}
           />
         </Dialog>
       </Menu>

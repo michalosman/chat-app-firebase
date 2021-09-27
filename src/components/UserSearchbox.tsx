@@ -47,10 +47,10 @@ const useStyles = makeStyles((theme) => ({
 interface Props {
   onItemClick: (id: string) => void
   onCancel: () => void
-  avoidUsersList?: User[]
+  avoidIdList?: string[]
 }
 
-const UserSearchbox = ({ onItemClick, onCancel, avoidUsersList }: Props) => {
+const UserSearchbox = ({ onItemClick, onCancel, avoidIdList }: Props) => {
   const classes = useStyles()
   const currentUser = useSelector((state: AppState) => state.user)
   const [input, setInput] = useState('')
@@ -75,10 +75,7 @@ const UserSearchbox = ({ onItemClick, onCancel, avoidUsersList }: Props) => {
       (user) =>
         user.displayName.match(regex) &&
         user.uid !== currentUser.uid &&
-        !avoidUsersList?.find(
-          (alreadyCreatedPrivateGroupUser) =>
-            alreadyCreatedPrivateGroupUser.uid === user.uid
-        )
+        !avoidIdList?.find((IdToAvoid) => IdToAvoid === user.uid)
     )
   }
 
