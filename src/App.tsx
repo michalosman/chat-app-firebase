@@ -20,12 +20,12 @@ import { Box } from '@material-ui/core'
 export const LoadingContext = createContext(true)
 
 const App = () => {
-  const [user, loadingUserAuth] = useAuthState(auth)
-  const [loadingUserData, setLoadingUserData] = useState(true)
-  const [loadingGroupsData, setLoadingGroupsData] = useState(true)
   const dispatch = useDispatch()
   const previousGroupsLength = useRef(0)
   const previousPrivateGroupsLength = useRef(0)
+  const [user, loadingUserAuth] = useAuthState(auth)
+  const [loadingUserData, setLoadingUserData] = useState(true)
+  const [loadingGroupsData, setLoadingGroupsData] = useState(true)
 
   useEffect(() => {
     let unsubscribe = () => {}
