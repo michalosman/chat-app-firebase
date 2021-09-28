@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import User from '../types/User'
-import { db } from '../firebase'
-import { AppState } from '../state/store/store'
-import { convertDocToUser } from '../utils/converters'
+import User from '../../types/User'
+import { db } from '../../firebase'
+import { AppState } from '../../state/store/store'
+import { convertDocToUser } from '../../utils/converters'
 
 import {
   Avatar,
