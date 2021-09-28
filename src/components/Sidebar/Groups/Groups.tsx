@@ -36,6 +36,22 @@ const Groups = ({ currentSearch, setCurrentSearch }: Props) => {
   const loadingGroupsData = useContext(LoadingContext)
   const { groupID } = useParams<{ groupID: string }>()
 
+  const sortGroups = (groups: Group[]) => {
+    if (groups.length < 2) return groups
+    const groupsWithMsg = groups.filter((group) => group.recentMessage)
+    const groupsWithoutMsg = groups.filter((group) => !group.recentMessage)
+    return [
+      ...groupsWithMsg.sort((g1, g2) => {
+        if (g2.recentMessage.sentAt === null) return 1
+        if (g1.recentMessage.sentAt === null) return -1
+        return g1.recentMessage.sentAt < g2.recentMessage.sentAt ? 1 : -1
+      }),
+      ...groupsWithoutMsg.sort((g1, g2) =>
+        g1.createdAt < g2.createdAt ? 1 : -1
+      ),
+    ]
+  }
+
   const filterGroups = (groups: Group[]) => {
     if (currentSearch === '') return groups
     if (currentSearch.includes('\\')) return []
@@ -52,7 +68,7 @@ const Groups = ({ currentSearch, setCurrentSearch }: Props) => {
     )
   }
 
-  const groupBoxes = filterGroups(groups).map((group) => (
+  const groupBoxes = sortGroups(filterGroups(groups)).map((group) => (
     <GroupBox key={group.id} group={group} isActive={groupID === group.id} />
   ))
 
