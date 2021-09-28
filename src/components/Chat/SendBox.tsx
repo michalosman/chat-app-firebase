@@ -1,13 +1,14 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import Picker from 'emoji-picker-react'
 import firebase from 'firebase/app'
 import { db } from '../../firebase'
 import { AppState } from '../../state/store/store'
 
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions'
 import SendIcon from '@material-ui/icons/Send'
-import { Box, IconButton, Input, makeStyles } from '@material-ui/core'
+import { Box, IconButton, Input, makeStyles, Popover } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -26,6 +27,11 @@ const SendBox = () => {
   const currentUser = useSelector((state: AppState) => state.user)
   const { groupID } = useParams<{ groupID: string }>()
   const [input, setInput] = useState('')
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
+  useEffect(() => {
+    setInput('')
+  }, [groupID])
 
   const sendMessage = (e: React.FormEvent) => {
     e.preventDefault()
@@ -62,6 +68,19 @@ const SendBox = () => {
     setInput('')
   }
 
+  const openEmojiPicker = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(e.currentTarget)
+  }
+
+  const closeEmojiPicker = () => {
+    setAnchorEl(null)
+  }
+
+  const onEmojiClick = (event: any, emojiObject: any) => {
+    setInput(input + emojiObject.emoji)
+    closeEmojiPicker()
+  }
+
   return (
     <Box
       display="flex"
@@ -73,9 +92,17 @@ const SendBox = () => {
       borderLeft={0}
       borderColor={'divider'}
     >
-      <IconButton>
+      <IconButton onClick={openEmojiPicker}>
         <EmojiEmotionsIcon />
       </IconButton>
+      <Popover
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={closeEmojiPicker}
+      >
+        <Picker onEmojiClick={onEmojiClick} />
+      </Popover>
       <form className={classes.form} onSubmit={sendMessage}>
         <Input
           className={classes.input}
