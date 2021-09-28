@@ -49,6 +49,8 @@ const App = () => {
           if (groups.length === 0) {
             dispatch(setGroups(GROUPS_INIT_STATE))
             dispatch(setPrivateGroupsUsers(PRIVATE_GROUPS_USERS_INIT_STATE))
+            previousGroupsLength.current = 0
+            previousPrivateGroupsLength.current = 0
             setLoadingGroupsData(false)
             return
           } else {
@@ -69,6 +71,7 @@ const App = () => {
 
           if (privateGroups.length === 0) {
             dispatch(setPrivateGroupsUsers(PRIVATE_GROUPS_USERS_INIT_STATE))
+            previousPrivateGroupsLength.current = 0
             // Timeout keeps loadings consistent when no private groups
             setTimeout(() => setLoadingGroupsData(false), 300)
             return
@@ -110,6 +113,7 @@ const App = () => {
       setLoadingUserData(true)
       setLoadingGroupsData(true)
       previousGroupsLength.current = 0
+      previousPrivateGroupsLength.current = 0
     }
 
     return () => {
