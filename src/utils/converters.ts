@@ -26,6 +26,7 @@ const convertDocToGroup = (doc: any): Group => {
   const group: Group = {
     id: doc.id,
     name: doc.data().name,
+    createdAt: doc.data().createdAt,
     createdBy: doc.data().createdBy,
     type: doc.data().type,
     members: doc.data().members,

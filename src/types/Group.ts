@@ -3,6 +3,7 @@ interface Group {
   name: string
   type: string
   members: string[]
+  createdAt: string
   createdBy: {
     uid: string
     displayName: string

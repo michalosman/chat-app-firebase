@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
+import firebase from 'firebase/app'
 import UserSearchbox from '../../utils/UserSearchbox'
 import InputBox from '../../utils/InputBox'
 import { db } from '../../../firebase'
@@ -63,6 +64,7 @@ const AddChatMenu = () => {
         uid: currentUser.uid,
         displayName: currentUser.displayName,
       },
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     })
     closePrivateDialog()
   }
@@ -76,6 +78,7 @@ const AddChatMenu = () => {
         uid: currentUser.uid,
         displayName: currentUser.displayName,
       },
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     })
     closeGroupDialog()
   }
