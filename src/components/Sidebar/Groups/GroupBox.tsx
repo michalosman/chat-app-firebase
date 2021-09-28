@@ -1,10 +1,14 @@
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import Group from '../../../types/Group'
+import { AppState } from '../../../state/store/store'
+import {
+  cutText,
+  formatDate,
+  getOtherPrivateGroupMember,
+} from '../../../utils/utils'
 
 import { Avatar, Box, Button, Typography, makeStyles } from '@material-ui/core'
-import { getOtherPrivateGroupMember } from '../../../utils/utils'
-import { useSelector } from 'react-redux'
-import { AppState } from '../../../state/store/store'
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -42,10 +46,6 @@ const GroupBox = ({ group, isActive }: Props) => {
     privateGroupsUsers
   )
 
-  const formatMessage = (message: string) => {
-    return message.length < 20 ? message : message.substr(0, 20) + '...'
-  }
-
   return (
     <Link className={classes.link} to={`/${group.id}`}>
       <Button
@@ -62,22 +62,31 @@ const GroupBox = ({ group, isActive }: Props) => {
                 `
             }
           />
-          <Box
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-            ml={2}
-          >
+          <Box display="flex" flexDirection="column" ml={2} width="100%">
             <Typography align="left">
-              {group.type === 'private' ? otherMember?.displayName : group.name}
+              {group.type === 'private'
+                ? otherMember
+                  ? cutText(otherMember.displayName, 17)
+                  : ''
+                : cutText(group.name, 14)}
             </Typography>
-            <Typography variant="caption" color="textSecondary" align="left">
-              {group.recentMessage
-                ? `${formatMessage(group.recentMessage.text)}`
-                : `${formatMessage(
-                    group.createdBy.displayName
-                  )} started a chat`}
-            </Typography>
+            <Box display="flex" justifyContent="space-between">
+              <Typography variant="caption" color="textSecondary">
+                {group.recentMessage
+                  ? `${cutText(group.recentMessage.text, 10)}`
+                  : `${cutText(
+                      group.createdBy.displayName,
+                      10
+                    )} started a chat`}
+              </Typography>
+              <Typography variant="caption" color="textSecondary">
+                {`${
+                  group.recentMessage
+                    ? formatDate(group.recentMessage.sentAt)
+                    : formatDate(group.createdAt)
+                }`}
+              </Typography>
+            </Box>
           </Box>
         </Box>
       </Button>

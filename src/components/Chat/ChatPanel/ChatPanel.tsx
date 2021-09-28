@@ -6,8 +6,12 @@ import Group from '../../../types/Group'
 import PrivateMenu from './PrivateMenu'
 import PublicMenu from './PublicMenu'
 import { AppState } from '../../../state/store/store'
-import { getOtherPrivateGroupMember } from '../../../utils/utils'
 import { LoadingContext } from '../../../App'
+import {
+  cutText,
+  formatDate,
+  getOtherPrivateGroupMember,
+} from '../../../utils/utils'
 
 import {
   Avatar,
@@ -75,11 +79,25 @@ const ChatPanel = () => {
                   : `https://avatars.dicebear.com/api/initials/${group.name}.svg`
               }
             />
-            <Box ml={1}>
+            <Box
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              ml={1}
+            >
               <Typography className={classes.bold}>
                 {group.type === 'private'
-                  ? otherMember?.displayName
-                  : group.name}
+                  ? otherMember
+                    ? cutText(otherMember.displayName, 24)
+                    : ''
+                  : cutText(group.name, 24)}
+              </Typography>
+              <Typography variant="caption" color="textSecondary">
+                {`Last message at ${
+                  group.recentMessage
+                    ? formatDate(group.recentMessage.sentAt)
+                    : formatDate(group.createdAt)
+                }`}
               </Typography>
             </Box>
           </Box>
