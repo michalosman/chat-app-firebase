@@ -83,7 +83,14 @@ const ChatPanel = () => {
               </Typography>
             </Box>
           </Box>
-          {group.type === 'private' ? <PrivateMenu /> : <PublicMenu />}
+          {group.type === 'private' ? (
+            <PrivateMenu />
+          ) : (
+            <PublicMenu
+              group={group}
+              isOwner={group.createdBy.uid === currentUser.uid}
+            />
+          )}
         </Box>
       ) : (
         ''

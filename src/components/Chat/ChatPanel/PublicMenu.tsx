@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import UserSearchbox from '../../UserSearchbox'
@@ -17,14 +17,35 @@ import {
   ListItemIcon,
   ListItemText,
   Dialog,
+  Input,
+  Box,
+  Button,
+  makeStyles,
 } from '@material-ui/core'
+import Group from '../../../types/Group'
 
-const PublicMenu = () => {
-  const isOwner = true
-  const groups = useSelector((state: AppState) => state.groups)
+const useStyles = makeStyles((theme) => ({
+  input: {
+    borderRadius: '4px',
+    height: '38px',
+    paddingRight: theme.spacing(1.5),
+    paddingLeft: theme.spacing(1.5),
+  },
+}))
+
+interface Props {
+  group: Group
+  isOwner: boolean
+}
+
+const PublicMenu = ({ group, isOwner }: Props) => {
+  const classes = useStyles()
+  const currentUser = useSelector((state: AppState) => state.user)
   const { groupID } = useParams<{ groupID: string }>()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [isAddPersonDialogOpen, setIsAddPersonDialogOpen] = useState(false)
+  const [isRenameDialogOpen, setIsRenameDialogOpen] = useState(false)
+  const [renameDialogInput, setRenameDialogInput] = useState('')
 
   const openMenu = (e: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(e.currentTarget)
@@ -36,26 +57,66 @@ const PublicMenu = () => {
 
   const openAddPersonDialog = () => {
     setIsAddPersonDialogOpen(true)
+    closeMenu()
   }
 
   const closeAddPersonDialog = () => {
     setIsAddPersonDialogOpen(false)
   }
 
-  const addPerson = (id: string) => {
-    const members = groups.find((group) => group.id === groupID)?.members
-    if (members?.find((memberID) => memberID === id)) return
+  const openRenameDialog = () => {
+    setIsRenameDialogOpen(true)
+    closeMenu()
+  }
 
-    if (members) {
-      db.collection('groups')
-        .doc(groupID)
-        .set(
-          {
-            members: [...members, id],
-          },
-          { merge: true }
-        )
-    }
+  const closeRenameDialog = () => {
+    setIsRenameDialogOpen(false)
+  }
+
+  const addPerson = (id: string) => {
+    if (group.members.find((memberID) => memberID === id)) return
+
+    db.collection('groups')
+      .doc(groupID)
+      .set(
+        {
+          members: [...group.members, id],
+        },
+        { merge: true }
+      )
+  }
+
+  const deleteGroup = () => {
+    if (!isOwner) return
+    db.collection('groups').doc(groupID).delete()
+  }
+
+  const leaveGroup = () => {
+    db.collection('groups')
+      .doc(groupID)
+      .set(
+        {
+          members: group.members.filter(
+            (memberID) => memberID !== currentUser.uid
+          ),
+        },
+        { merge: true }
+      )
+  }
+
+  const renameGroup = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    db.collection('groups').doc(groupID).set(
+      {
+        name: renameDialogInput,
+      },
+      { merge: true }
+    )
+    closeRenameDialog()
+  }
+
+  const handleRenameDialogInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRenameDialogInput(e.currentTarget.value)
   }
 
   return (
@@ -75,21 +136,25 @@ const PublicMenu = () => {
           </ListItemIcon>
           <ListItemText primary="Add person" />
         </MenuItem>
-        <MenuItem onClick={closeMenu}>
-          <ListItemIcon>
-            <EditIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Rename" />
-        </MenuItem>
         {isOwner ? (
-          <MenuItem onClick={closeMenu}>
+          <MenuItem onClick={openRenameDialog}>
+            <ListItemIcon>
+              <EditIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Rename" />
+          </MenuItem>
+        ) : (
+          ''
+        )}
+        {isOwner ? (
+          <MenuItem onClick={deleteGroup}>
             <ListItemIcon>
               <DeleteIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText primary="Delete" />
           </MenuItem>
         ) : (
-          <MenuItem onClick={closeMenu}>
+          <MenuItem onClick={leaveGroup}>
             <ListItemIcon>
               <ExitToAppIcon fontSize="small" />
             </ListItemIcon>
@@ -100,8 +165,34 @@ const PublicMenu = () => {
           <UserSearchbox
             onItemClick={addPerson}
             onCancel={closeAddPersonDialog}
-            avoidIdList={groups.find((group) => group.id === groupID)?.members}
+            avoidIdList={group.members}
           />
+        </Dialog>
+        <Dialog open={isRenameDialogOpen} onClose={closeRenameDialog}>
+          <Box p={2}>
+            <form onSubmit={renameGroup}>
+              <Input
+                className={classes.input}
+                placeholder="New name"
+                onChange={handleRenameDialogInput}
+                value={renameDialogInput}
+                disableUnderline
+                required
+              />
+              <Box display="flex" justifyContent="space-between" mt={2}>
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  onClick={closeRenameDialog}
+                >
+                  Cancel
+                </Button>
+                <Button color="primary" variant="contained" type="submit">
+                  Rename
+                </Button>
+              </Box>
+            </form>
+          </Box>
         </Dialog>
       </Menu>
     </>
