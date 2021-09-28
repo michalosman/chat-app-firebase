@@ -1,5 +1,6 @@
 import Group from '../types/Group'
 import User from '../types/User'
+import dayjs from 'dayjs'
 
 const getOtherPrivateGroupMember = (
   group: Group,
@@ -14,4 +15,13 @@ const getOtherPrivateGroupMember = (
   return otherMember
 }
 
-export { getOtherPrivateGroupMember }
+const cutText = (text: string, length: number) => {
+  return text.length <= length ? text : text.substr(0, length) + '...'
+}
+
+const formatDate = (time: any) => {
+  if (!time) return dayjs(new Date()).format(`DD/MM HH:mm`)
+  return dayjs(new Date(time.toDate())).format(`DD/MM HH:mm`)
+}
+
+export { getOtherPrivateGroupMember, cutText, formatDate }
