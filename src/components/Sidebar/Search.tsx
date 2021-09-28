@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 
 import { Box, Input, makeStyles } from '@material-ui/core'
 
@@ -10,9 +10,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Search = () => {
+interface Props {
+  currentSearch: string
+  setCurrentSearch: Dispatch<SetStateAction<string>>
+}
+
+const Search = ({ currentSearch, setCurrentSearch }: Props) => {
   const classes = useStyles()
-  const [input, setInput] = useState('')
 
   return (
     <Box className={classes.search} m={2}>
@@ -20,8 +24,8 @@ const Search = () => {
         fullWidth
         disableUnderline
         placeholder="Search chat"
-        onChange={(e) => setInput(e.target.value)}
-        value={input}
+        onChange={(e) => setCurrentSearch(e.target.value)}
+        value={currentSearch}
       />
     </Box>
   )

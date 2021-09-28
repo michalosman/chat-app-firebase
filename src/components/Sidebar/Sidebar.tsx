@@ -3,6 +3,7 @@ import Search from './Search'
 import UserPanel from './UserPanel'
 
 import { Box, makeStyles } from '@material-ui/core'
+import { useState } from 'react'
 
 const useStyles = makeStyles((theme) => ({
   sidebar: {
@@ -14,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Sidebar = () => {
   const classes = useStyles()
+  const [currentSearch, setCurrentSearch] = useState('')
 
   return (
     <Box
@@ -28,8 +30,14 @@ const Sidebar = () => {
       borderColor={'divider'}
     >
       <UserPanel />
-      <Search />
-      <Groups />
+      <Search
+        currentSearch={currentSearch}
+        setCurrentSearch={setCurrentSearch}
+      />
+      <Groups
+        currentSearch={currentSearch}
+        setCurrentSearch={setCurrentSearch}
+      />
     </Box>
   )
 }
