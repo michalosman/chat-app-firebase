@@ -111,6 +111,7 @@ const SendBox = () => {
           placeholder="Aa"
           onChange={(e) => setInput(e.target.value)}
           value={input}
+          autoFocus
         />
         <IconButton type="submit">
           <SendIcon />

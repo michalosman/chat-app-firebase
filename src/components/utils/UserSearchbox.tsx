@@ -103,6 +103,7 @@ const UserSearchbox = ({ onItemClick, onCancel, avoidIdList }: Props) => {
         value={input}
         disableUnderline
         required
+        autoFocus
       />
       <List className={classes.list}>{usersList}</List>
       <Button

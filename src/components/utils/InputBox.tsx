@@ -46,6 +46,7 @@ const InputBox = ({
           value={input}
           disableUnderline
           required
+          autoFocus
         />
         <Box display="flex" justifyContent="space-between" mt={2}>
           <Button color="secondary" variant="contained" onClick={onCancel}>
