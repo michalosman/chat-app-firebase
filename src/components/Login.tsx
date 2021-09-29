@@ -36,16 +36,14 @@ const useStyles = makeStyles((theme) => ({
     left: '0',
   },
 
-  link: {
-    '&:hover': {
-      color: theme.palette.primary.main,
-    },
+  linkHover: {
+    transition: 'transform 0.2s ease-in-out',
+    '&:hover': { transform: 'scale(1.2)' },
   },
 }))
 
 const Login = () => {
   const classes = useStyles()
-
   const signInWithGoogle = async () => {
     const { user } = await auth.signInWithPopup(provider)
     if (user) saveUserData(user)
@@ -113,10 +111,9 @@ const Login = () => {
         width="100%"
         py={1}
       >
-        <Typography variant="h6">Copyright © 2021 michalosman</Typography>
-        <Box ml={1}>
+        <Typography>Copyright © 2021 michalosman</Typography>
+        <Box ml={1} className={classes.linkHover}>
           <Link
-            className={classes.link}
             color="textPrimary"
             href="https://github.com/michalosman"
             target="_blank"
