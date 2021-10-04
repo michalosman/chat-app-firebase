@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = () => {
   const classes = useStyles()
+
   const signInWithGoogle = async () => {
     const { user } = await auth.signInWithPopup(provider)
     if (user) saveUserData(user)

@@ -33,7 +33,7 @@ const Groups = ({ currentSearch, setCurrentSearch }: Props) => {
   const privateGroupsUsers = useSelector(
     (state: AppState) => state.privateGroupsUsers
   )
-  const loadingGroupsData = useContext(LoadingContext)
+  const loading = useContext(LoadingContext)
   const { groupID } = useParams<{ groupID: string }>()
 
   const sortGroups = (groups: Group[]) => {
@@ -81,7 +81,7 @@ const Groups = ({ currentSearch, setCurrentSearch }: Props) => {
       mr={1}
       flex={1}
     >
-      {loadingGroupsData ? (
+      {loading ? (
         <Box display="flex" justifyContent="center" flex={1} mt={3}>
           <CircularProgress size="50px" />
         </Box>

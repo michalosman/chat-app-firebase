@@ -34,7 +34,7 @@ const ChatPanel = () => {
   const privateGroupsUsers = useSelector(
     (state: AppState) => state.privateGroupsUsers
   )
-  const loadingGroupsData = useContext(LoadingContext)
+  const loading = useContext(LoadingContext)
   const { groupID } = useParams<{ groupID: string }>()
   const [group, setGroup] = useState<Group>()
   const [otherMember, setOtherMember] = useState<User>()
@@ -67,7 +67,7 @@ const ChatPanel = () => {
       borderLeft={0}
       borderColor={'divider'}
     >
-      {loadingGroupsData ? (
+      {loading ? (
         <CircularProgress size="43px" />
       ) : group ? (
         <Box display="flex" justifyContent="space-between" alignItems="center">
