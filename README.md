@@ -1,14 +1,16 @@
 # Chat App
 
-[Live Demo](https://michalosman.github.io/chat-app/) :point_left:
+Chat App created with React & Firebase.
+
+[Live Demo](https://chat-app-michalosman.netlify.app/) :point_left:
 
 ## Getting started
 
 ### Project setup
 
 ```
-git clone https://github.com/michalosman/chat-app.git
-cd chat-app
+git clone https://github.com/michalosman/chat-app-firebase.git
+cd chat-app-firebase
 npm install
 npm start
 ```
@@ -18,11 +20,11 @@ npm start
 - Create a Firebase project
   - Go to [Firebase](https://firebase.google.com/) &rarr; Get Started &rarr; Add project
 - Register your app
-  - Go to Project overview &rarr; Web App </>
+  - Go to Project overview &rarr; Choose </> (Web App)
 - Enable Google Sign in
   - Go to Authentication &rarr; Get Started &rarr; Sign-in method &rarr; Enable Google
 - Enable Firestore
-  - Go to Firestore Database &rarr; Get Started
+  - Go to Firestore Database &rarr; Create database
 - Setup project
   - Go to Project settings &rarr; General &rarr; Your apps &rarr; SDK setup and configuration &rarr; Config
   - Create a .env.local file in project's root directory
@@ -37,21 +39,11 @@ REACT_APP_MESSAGING_SENDER_ID={senderId}
 REACT_APP_APP_ID={appId}
 ```
 
-### Deployment (TODO)
-
-- Set up security rules (Firestore Database)
-- Remove localhost from Authorized domains (Authentication)
-- Hosting
-
 ## Built with
 
 - [TypeScript](https://www.typescriptlang.org/)
 - [React](https://reactjs.org/)
 - [Redux](https://redux.js.org/)
-- [Firebase](https://firebase.google.com/)
 - [Material-UI](https://material-ui.com/)
+- [Firebase](https://firebase.google.com/)
 - [react-firebase-hooks](https://github.com/CSFrequency/react-firebase-hooks)
-
-## License
-
-This project is licensed under the [MIT License](https://github.com/michalosman/chat-app/blob/main/LICENSE)
