@@ -4,6 +4,24 @@ Chat App created with React & Firebase.
 
 [Live Demo](https://chat-app-michalosman.netlify.app/) :point_left:
 
+### Features
+
+- Google sign in
+- Toggle dark / light theme
+- Create and delete private chats
+- Create, manage, leave and delete public chats
+- Responsive design
+
+## Screenshots
+
+### Mobile
+
+![mobile-dark](https://user-images.githubusercontent.com/40360401/151681357-fe49eb57-6f11-439e-a85a-18fb34adb023.png)
+
+### Desktop
+
+![desktop-dark](https://user-images.githubusercontent.com/40360401/151681199-a882d89b-8fc6-474f-ab53-f509abaf0715.png)
+
 ## Getting started
 
 ### Project setup
