@@ -1,6 +1,5 @@
 import { setUser } from './user'
-import { setGroups } from './groups'
-import { setPrivateGroupsUsers } from './privateGroupsUsers'
+import { setChats } from './chats'
 import { toggleDarkTheme } from './darkThemeEnabled'
 
-export { setUser, setGroups, setPrivateGroupsUsers, toggleDarkTheme }
+export { setUser, setChats, toggleDarkTheme }

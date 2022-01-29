@@ -3,7 +3,6 @@ import { Provider } from 'react-redux'
 import App from './App'
 import CustomThemeProvider from './theme/CustomThemeProvider'
 import { store } from './state/store/store'
-
 import { CssBaseline } from '@material-ui/core'
 
 ReactDOM.render(

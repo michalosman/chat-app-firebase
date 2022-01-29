@@ -1,145 +1,81 @@
-import { createContext, useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import Chat from './components/Chat'
 import Sidebar from './components/Sidebar'
 import Login from './components/Login'
-import User from './types/User'
+import Loading from './components/Loading'
 import { auth, db } from './firebase'
-import { setGroups, setPrivateGroupsUsers, setUser } from './state/actions'
-import { convertDocToGroup, convertDocToUser } from './utils/converters'
-import { getOtherPrivateGroupMember } from './utils/utils'
+import { convertDocToChat, convertDocToUser } from './utils'
 import { USER_INIT_STATE } from './state/reducers/user'
-import { GROUPS_INIT_STATE } from './state/reducers/groups'
-import { PRIVATE_GROUPS_USERS_INIT_STATE } from './state/reducers/privateGroupsUsers'
-
-import CircularProgress from '@material-ui/core/CircularProgress'
+import { CHATS_INIT_STATE } from './state/reducers/chats'
 import { Box } from '@material-ui/core'
-
-export const LoadingContext = createContext(true)
+import { setChats, setUser } from './state/actions'
 
 const App = () => {
   const dispatch = useDispatch()
-  const previousGroupsLength = useRef(0)
-  const previousPrivateGroupsLength = useRef(0)
-  const [user, loadingUserAuth] = useAuthState(auth)
-  const [loadingUserData, setLoadingUserData] = useState(true)
-  const [loadingGroupsData, setLoadingGroupsData] = useState(true)
+  const [user, loading] = useAuthState(auth)
+  const [fetchingUserData, setFetchingUserData] = useState(true)
 
   useEffect(() => {
-    let unsubscribe = () => {}
-
-    if (user) {
-      db.collection('users')
-        .doc(user.uid)
-        .get()
-        .then((snapshot) => {
-          dispatch(setUser(convertDocToUser(snapshot)))
-          setLoadingUserData(false)
-        })
-
-      unsubscribe = db
-        .collection('groups')
-        .where('members', 'array-contains', user.uid)
-        .onSnapshot((snapshot) => {
-          setLoadingGroupsData(true)
-          const groups = snapshot.docs.map((doc) => convertDocToGroup(doc))
-
-          if (groups.length === 0) {
-            dispatch(setGroups(GROUPS_INIT_STATE))
-            dispatch(setPrivateGroupsUsers(PRIVATE_GROUPS_USERS_INIT_STATE))
-            previousGroupsLength.current = 0
-            previousPrivateGroupsLength.current = 0
-            setLoadingGroupsData(false)
-            return
-          } else {
-            dispatch(setGroups(groups))
-          }
-
-          // If it's just a group info update (e.g. new recentMessage)
-          if (groups.length === previousGroupsLength.current) {
-            setLoadingGroupsData(false)
-            return
-          } else {
-            previousGroupsLength.current = groups.length
-          }
-
-          const privateGroups = groups.filter(
-            (group) => group.type === 'private'
-          )
-
-          if (privateGroups.length === 0) {
-            dispatch(setPrivateGroupsUsers(PRIVATE_GROUPS_USERS_INIT_STATE))
-            previousPrivateGroupsLength.current = 0
-            // Timeout keeps loadings consistent when no private groups
-            setTimeout(() => setLoadingGroupsData(false), 300)
-            return
-          }
-
-          if (privateGroups.length === previousPrivateGroupsLength.current) {
-            setTimeout(() => setLoadingGroupsData(false), 300)
-            return
-          } else {
-            previousPrivateGroupsLength.current = privateGroups.length
-          }
-
-          // Case private chat has been added or removed
-          db.collection('users')
-            .get()
-            .then((snapshot) => {
-              const users = snapshot.docs.map((doc) => convertDocToUser(doc))
-              const privateGroupsUsers: User[] = []
-
-              for (const group of privateGroups) {
-                const otherMember = getOtherPrivateGroupMember(
-                  group,
-                  user.uid,
-                  users
-                )
-                if (otherMember) {
-                  privateGroupsUsers.push(otherMember)
-                }
-              }
-              dispatch(setPrivateGroupsUsers(privateGroupsUsers))
-              setLoadingGroupsData(false)
-            })
-        })
-    } else {
-      // Reset all in case user relogs during one session
+    if (!user) {
       dispatch(setUser(USER_INIT_STATE))
-      dispatch(setGroups(GROUPS_INIT_STATE))
-      dispatch(setPrivateGroupsUsers(PRIVATE_GROUPS_USERS_INIT_STATE))
-      setLoadingUserData(true)
-      setLoadingGroupsData(true)
-      previousGroupsLength.current = 0
-      previousPrivateGroupsLength.current = 0
+      dispatch(setChats(CHATS_INIT_STATE))
+      setFetchingUserData(true)
     }
+
+    fetchUserData()
+    const unsubscribe = subscribeChats()
 
     return () => {
       unsubscribe()
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
 
+  const fetchUserData = async () => {
+    if (!user) return
+
+    await db
+      .collection('users')
+      .doc(user.uid)
+      .get()
+      .then((snapshot) => {
+        dispatch(setUser(convertDocToUser(snapshot)))
+        setFetchingUserData(false)
+      })
+  }
+
+  const subscribeChats = () => {
+    if (!user) return () => {}
+
+    return db
+      .collection('chats')
+      .where('members', 'array-contains', {
+        uid: user.uid,
+        displayName: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+      })
+      .onSnapshot((snapshot) => {
+        const chats = snapshot.docs.map((doc) => convertDocToChat(doc))
+        dispatch(setChats(chats))
+      })
+  }
+
+  if (loading || (user && fetchingUserData)) return <Loading />
+  if (!user) return <Login />
+
   return (
     <Box display="flex" height="100vh">
-      {loadingUserAuth || (user && loadingUserData) ? (
-        <Box m="auto">
-          <CircularProgress size="150px" />
-        </Box>
-      ) : user && !loadingUserData ? (
-        <Router>
-          <Route exact path={['/', '/:groupID']}>
-            <LoadingContext.Provider value={loadingGroupsData}>
-              <Sidebar />
-              <Chat />
-            </LoadingContext.Provider>
-          </Route>
-        </Router>
-      ) : (
-        <Login />
-      )}
+      <Router>
+        <Route exact path={['/', '/:chatID']}>
+          <Sidebar />
+          <Chat />
+        </Route>
+      </Router>
     </Box>
   )
 }
