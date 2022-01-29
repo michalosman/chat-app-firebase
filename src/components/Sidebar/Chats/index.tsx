@@ -1,5 +1,4 @@
 import { useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
 import ChatBox from './ChatBox'
 import Chat from '../../../types/Chat'
 import { AppState } from '../../../state/store/store'
@@ -15,7 +14,6 @@ const Chats = ({ search }: Props) => {
   const classes = useStyles()
   const chats = useSelector((state: AppState) => state.chats)
   const user = useSelector((state: AppState) => state.user)
-  const { chatID } = useParams<{ chatID: string }>()
 
   const sortChats = (chats: Chat[]) => {
     return chats.sort((a, b) => {
@@ -38,7 +36,7 @@ const Chats = ({ search }: Props) => {
   }
 
   const chatBoxes = sortChats(filterChats(chats)).map((chat) => (
-    <ChatBox key={chat.id} chat={chat} isActive={chatID === chat.id} />
+    <ChatBox key={chat.id} chat={chat} />
   ))
 
   return (

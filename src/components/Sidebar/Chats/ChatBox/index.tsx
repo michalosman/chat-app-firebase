@@ -9,16 +9,18 @@ import {
 } from '../../../../utils'
 import { Avatar, Box, Button, Typography } from '@material-ui/core'
 import useStyles from './styles'
+import { useParams } from 'react-router-dom'
 
 interface Props {
   chat: Chat
-  isActive: boolean
 }
 
-const ChatBox = ({ chat, isActive }: Props) => {
+const ChatBox = ({ chat }: Props) => {
   const classes = useStyles()
   const user = useSelector((state: AppState) => state.user)
   const otherMember = getOtherPrivateChatMember(chat, user.uid)
+  const { chatID } = useParams<{ chatID: string }>()
+  const isActive = chatID === chat.id
 
   return (
     <Link className={classes.link} to={`/${chat.id}`}>
