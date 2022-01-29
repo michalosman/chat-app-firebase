@@ -1,13 +1,21 @@
-import { Box, CircularProgress } from '@material-ui/core'
+import { Box } from '@material-ui/core'
+import './styles.css'
 
 const Loading = () => {
   return (
     <Box display="flex" height="100vh">
       <Box m="auto">
-        <CircularProgress size="150px" />
+        <div className="lds-ellipsis">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
       </Box>
     </Box>
   )
 }
+
+// Normally would use CircularProgress but for some reason it was laggy
 
 export default Loading

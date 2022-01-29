@@ -17,12 +17,14 @@ const App = () => {
   const dispatch = useDispatch()
   const [user, loading] = useAuthState(auth)
   const [fetchingUserData, setFetchingUserData] = useState(true)
+  const [fetchingChatsData, setFetchingChatsData] = useState(true)
 
   useEffect(() => {
     if (!user) {
       dispatch(setUser(USER_INIT_STATE))
       dispatch(setChats(CHATS_INIT_STATE))
       setFetchingUserData(true)
+      setFetchingChatsData(true)
     }
 
     fetchUserData()
@@ -62,10 +64,12 @@ const App = () => {
       .onSnapshot((snapshot) => {
         const chats = snapshot.docs.map((doc) => convertDocToChat(doc))
         dispatch(setChats(chats))
+        setFetchingChatsData(false)
       })
   }
 
-  if (loading || (user && fetchingUserData)) return <Loading />
+  if (loading || (user && (fetchingUserData || fetchingChatsData)))
+    return <Loading />
   if (!user) return <Login />
 
   return (
