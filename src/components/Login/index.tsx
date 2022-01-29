@@ -14,12 +14,17 @@ const Login = () => {
   }
 
   const saveUserData = (user: firebase.User) => {
-    db.collection('users').doc(user.uid).set({
-      uid: user.uid,
-      displayName: user.displayName,
-      email: user.email,
-      photoURL: user.photoURL,
-    })
+    db.collection('users').doc(user.uid).set(
+      {
+        uid: user.uid,
+        displayName: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+      },
+      {
+        merge: true,
+      }
+    )
   }
 
   return (
