@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from '@material-ui/core'
 
 export default makeStyles((theme) => ({
   scrollBox: {
@@ -16,7 +16,7 @@ export default makeStyles((theme) => ({
   ownMessage: {
     marginRight: '0',
     marginLeft: 'auto',
-    backgroundColor: theme.palette.primary.light,
+    backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
     '& $messageInfo': {
       right: '5px',
