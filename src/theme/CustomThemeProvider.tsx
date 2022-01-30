@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { AppState } from '../state/store/store'
+import { AppState } from '../store'
 
 import { createTheme, ThemeProvider } from '@material-ui/core'
 

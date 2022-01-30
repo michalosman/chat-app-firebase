@@ -1,17 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import Chat from './components/Chat'
-import Sidebar from './components/Sidebar'
-import Login from './components/Login'
-import Loading from './components/Loading'
+import Login from './pages/Login'
+import Loading from './pages/Loading'
 import { auth, db } from './firebase'
 import { convertDocToChat, convertDocToUser } from './utils'
-import { USER_INIT_STATE } from './state/reducers/user'
-import { CHATS_INIT_STATE } from './state/reducers/chats'
-import { Box } from '@material-ui/core'
-import { setChats, setUser } from './state/actions'
+import { USER_INIT_STATE } from './reducers/user'
+import { CHATS_INIT_STATE } from './reducers/chats'
+import { setChats, setUser } from './actions'
+import Home from './pages/Home'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -70,18 +67,9 @@ const App = () => {
 
   if (loading || (user && (fetchingUserData || fetchingChatsData)))
     return <Loading />
-  if (!user) return <Login />
 
-  return (
-    <Box display="flex" height="100vh">
-      <Router>
-        <Route exact path={['/', '/:chatID']}>
-          <Sidebar />
-          <Chat />
-        </Route>
-      </Router>
-    </Box>
-  )
+  if (!user) return <Login />
+  return <Home />
 }
 
 export default App
