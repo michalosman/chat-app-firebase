@@ -5,6 +5,7 @@ import { db } from '../../firebase'
 import { AppState } from '../../store'
 import { convertDocToUser } from '../../utils'
 import { Avatar, Box, Button, Input, List, ListItem } from '@material-ui/core'
+import { cutText } from '../../utils'
 import useStyles from './styles'
 
 interface Props {
@@ -58,20 +59,21 @@ const UserSearch = ({ onItemClick, onCancel, avoidIdList }: Props) => {
       }
     >
       <Avatar className={classes.avatar} src={user.photoURL} />
-      {user.displayName}
+      {cutText(user.displayName, 30)}
     </ListItem>
   ))
 
   return (
-    <Box p={2}>
+    <Box p={2} width="300px">
       <Input
         className={classes.input}
-        placeholder="Search person"
+        placeholder="Search"
         onChange={handleInput}
         value={input}
         disableUnderline
         required
         autoFocus
+        fullWidth
       />
       <List className={classes.list}>{usersList}</List>
       <Button

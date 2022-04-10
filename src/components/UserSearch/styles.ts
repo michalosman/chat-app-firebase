@@ -10,11 +10,12 @@ export default makeStyles((theme) => ({
   },
 
   list: {
-    width: '105%',
-    height: '121px',
+    width: '100%',
+    height: '160px',
     padding: '0',
     overflowY: 'scroll',
     overflowX: 'hidden',
+    marginBottom: theme.spacing(2),
   },
 
   li: {
