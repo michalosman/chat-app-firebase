@@ -2,7 +2,7 @@
 
 Chat App created with React & Firebase.
 
-[Live Demo](https://chat-app-michalosman.netlify.app/) :point_left:
+[Live Demo](https://chat-app-mo.netlify.app/) :point_left:
 
 ### Features
 
