@@ -42,8 +42,7 @@ const App = () => {
       .doc(user.uid)
       .get()
       .then((snapshot) => {
-        // if (!snapshot.data()) return
-        console.log(snapshot.data())
+        if (!snapshot.data()) return
         dispatch(setUser(convertDocToUser(snapshot)))
         setFetchingUserData(false)
       })
