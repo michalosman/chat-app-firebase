@@ -4,13 +4,17 @@ import { auth, db, provider } from '../../firebase'
 import GitHubIcon from '@material-ui/icons/GitHub'
 import { Box, Button, Link, Typography } from '@material-ui/core'
 import useStyles from './styles'
+import { convertDocToChat } from '../../utils'
 
 const Login = () => {
   const classes = useStyles()
+  const TEST_CHAT_ID = process.env.REACT_APP_TEST_CHAT_ID
 
   const signInWithGoogle = async () => {
     const { user } = await auth.signInWithPopup(provider)
-    if (user) saveUserData(user)
+    if (!user) return
+    saveUserData(user)
+    addUserToTestChat(user)
   }
 
   const saveUserData = (user: firebase.User) => {
@@ -25,6 +29,31 @@ const Login = () => {
         merge: true,
       }
     )
+  }
+
+  const addUserToTestChat = async (user: firebase.User) => {
+    const testChat = convertDocToChat(
+      await db.collection('chats').doc(TEST_CHAT_ID).get()
+    )
+
+    if (testChat.members.find((member) => member.uid === user.uid)) return
+
+    db.collection('chats')
+      .doc(TEST_CHAT_ID)
+      .set(
+        {
+          members: [
+            ...testChat.members,
+            {
+              uid: user.uid,
+              displayName: user.displayName,
+              email: user.email,
+              photoURL: user.photoURL,
+            },
+          ],
+        },
+        { merge: true }
+      )
   }
 
   return (

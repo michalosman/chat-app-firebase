@@ -32,6 +32,7 @@ const PublicMenu = ({ chat, isOwner }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [isAddPersonDialogOpen, setIsAddPersonDialogOpen] = useState(false)
   const [isRenameDialogOpen, setIsRenameDialogOpen] = useState(false)
+  const TEST_CHAT_ID = process.env.REACT_APP_TEST_CHAT_ID
 
   const openMenu = (e: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(e.currentTarget)
@@ -80,6 +81,8 @@ const PublicMenu = ({ chat, isOwner }: Props) => {
   }
 
   const leaveChat = () => {
+    if (chat.id === TEST_CHAT_ID) return
+
     db.collection('chats')
       .doc(chatID)
       .set(
@@ -135,11 +138,15 @@ const PublicMenu = ({ chat, isOwner }: Props) => {
             <ListItemText primary="Delete" />
           </MenuItem>
         ) : (
-          <MenuItem onClick={leaveChat}>
+          <MenuItem disabled={chat.id === TEST_CHAT_ID} onClick={leaveChat}>
             <ListItemIcon>
               <ExitToAppIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText primary="Leave" />
+            <ListItemText
+              primary={`Leave${
+                chat.id === TEST_CHAT_ID ? ' (disabled in test chat)' : ''
+              }`}
+            />
           </MenuItem>
         )}
         <Dialog open={isAddPersonDialogOpen} onClose={closeAddPersonDialog}>
