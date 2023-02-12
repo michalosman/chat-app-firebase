@@ -12,9 +12,11 @@ import {
   Menu,
   MenuItem,
 } from '@material-ui/core'
+import { useHistory } from 'react-router-dom'
 
 const OptionsMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  let history = useHistory()
 
   const openMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget)
@@ -22,6 +24,11 @@ const OptionsMenu = () => {
 
   const handleClose = () => {
     setAnchorEl(null)
+  }
+
+  const logout = () => {
+    auth.signOut()
+    history.push('/')
   }
 
   return (
@@ -53,7 +60,7 @@ const OptionsMenu = () => {
           </ListItemIcon>
           <ListItemText primary="Report an issue" />
         </MenuItem>
-        <MenuItem onClick={() => auth.signOut()}>
+        <MenuItem onClick={logout}>
           <ListItemIcon>
             <ExitToAppIcon />
           </ListItemIcon>
